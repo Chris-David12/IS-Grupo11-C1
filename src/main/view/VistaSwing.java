@@ -1,4 +1,7 @@
 import javax.swing.*;
+
+import main.model.botonRegistrar;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +18,12 @@ public class VistaSwing {
         JLabel etiqueta = new JLabel("Nombre:");
         JTextField campoTexto = new JTextField(20);
         JButton boton = new JButton("Prueba");
+        botonRegistrar registro = new botonRegistrar(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "Registro exitoso");
+            }
+        });
         JLabel prueba = new JLabel("");
 
         boton.addActionListener(new ActionListener() {
@@ -27,6 +36,7 @@ public class VistaSwing {
         panel.add(etiqueta);
         panel.add(campoTexto);
         panel.add(boton);
+        panel.add(registro);
         panel.add(prueba);
 
         frame.add(panel);
