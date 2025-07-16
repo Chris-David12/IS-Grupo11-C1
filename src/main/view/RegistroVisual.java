@@ -1,8 +1,7 @@
-package main.view;
 
 import javax.swing.*;
 
-import main.controler.controleRegister;
+import main.controller.controleRegister;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -30,7 +29,7 @@ public class RegistroVisual extends JFrame {
 
                 // 🌫️ Dibujar capa semi-transparente encima
                 g2d.setColor(new Color(16, 198, 90, 120)); // RGBA → negro con transparencia
-                g2d.fillRect(0, 0, getWidth(), getHeight());        
+                g2d.fillRect(0, 0, getWidth(), getHeight());
             }
         };
         panelIzquierdo.setPreferredSize(new Dimension(640, 720));
@@ -152,9 +151,8 @@ public class RegistroVisual extends JFrame {
 
         // Texto pequeño sobre el botón
         JLabel cuentaLabel = new JLabel(
-            "<html><span style='color:#CCCCCC;'>¿Ya tienes una cuenta? Haz click </span>" +
-            "<span style='color:#4FC3F7;'><u>aquí</u></span></html>"
-        );
+                "<html><span style='color:#CCCCCC;'>¿Ya tienes una cuenta? Haz click </span>" +
+                        "<span style='color:#4FC3F7;'><u>aquí</u></span></html>");
         cuentaLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         cuentaLabel.setBounds(220, 570, 220, 25); // Centrado sobre el botón
         cuentaLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -165,13 +163,14 @@ public class RegistroVisual extends JFrame {
         entrarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               if(!R.Validar(cedulaField.getText())){
-                R.Registrar(cedulaField.getText(),usuarioField.getText(),emailField.getText(),passField.getText());
+                if (!R.Validar(cedulaField.getText())) {
+                    R.Registrar(cedulaField.getText(), usuarioField.getText(), emailField.getText(),
+                            passField.getText());
 
-                String user = usuarioField.getText();
-               }else{
+                    String user = usuarioField.getText();
+                } else {
 
-               }
+                }
             }
         });
 

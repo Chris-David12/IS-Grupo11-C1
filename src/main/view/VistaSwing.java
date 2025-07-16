@@ -1,4 +1,3 @@
-package main.view;
 import javax.swing.*;
 
 import main.model.botonRegistrar;
