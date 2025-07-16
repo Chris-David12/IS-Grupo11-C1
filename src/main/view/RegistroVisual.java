@@ -1,4 +1,9 @@
+package main.view;
+
 import javax.swing.*;
+
+import main.controler.controleRegister;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -155,14 +160,18 @@ public class RegistroVisual extends JFrame {
         cuentaLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         panelDerecho.add(cuentaLabel);
 
-        entrarButton.addActionListener(e -> {
-            String user = usuarioField.getText();
-            String pass = new String(passField.getPassword());
+        controleRegister R = new controleRegister();
 
-            if (user.equals("admin") && pass.equals("1234")) {
-                JOptionPane.showMessageDialog(this, "¡Bienvenido " + user + "!");
-            } else {
-                JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos");
+        entrarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               if(!R.Validar(cedulaField.getText())){
+                R.Registrar(cedulaField.getText(),usuarioField.getText(),emailField.getText(),passField.getText());
+
+                String user = usuarioField.getText();
+               }else{
+
+               }
             }
         });
 
