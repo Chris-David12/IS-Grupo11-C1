@@ -20,7 +20,7 @@ public class RegistroVisual extends JFrame {
                 Graphics2D g2d = (Graphics2D) g;
 
                 // 🔧 Dibujar imagen de fondo
-                ImageIcon fondo = new ImageIcon("img/comedor(2).jpeg");
+                ImageIcon fondo = new ImageIcon("assets/comedor(2).jpeg");
                 g2d.drawImage(fondo.getImage(), 0, 0, getWidth(), getHeight(), this);
 
                 // 🌫️ Dibujar capa semi-transparente encima
@@ -32,7 +32,7 @@ public class RegistroVisual extends JFrame {
         panelIzquierdo.setLayout(null);
 
         // Tamaño deseado para el logo (más grande)
-        ImageIcon iconoOriginal = new ImageIcon("img/logo.png");
+        ImageIcon iconoOriginal = new ImageIcon("assets/logo.png");
         Image imagenOriginal = iconoOriginal.getImage();
         Image imagenEscalada = imagenOriginal.getScaledInstance(250, 250, Image.SCALE_SMOOTH); // Aumenta tamaño
         ImageIcon iconoFinal = new ImageIcon(imagenEscalada);
