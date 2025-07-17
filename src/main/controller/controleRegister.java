@@ -45,15 +45,28 @@ public class controleRegister {
         return Flag;
     }
 
-    public void Registrar(String Cedula, String name, String email, String password) {
+    public void RegistrarUser(String Cedula, String name, String email, String password) {
         try {
             File BaseDT = new File("output.txt");
             FileWriter myWriter = new FileWriter(BaseDT, true);
 
-            myWriter.write(UserID + "\n"+ Cedula + "\n" +name + "\n" + email + "\n"+ password + "\n" );
+            myWriter.write(UserID + "\n"+ Cedula + "\n" + "Comensal" + "\n" +name + "\n" + email + "\n"+ password + "\n" );
 
             myWriter.close();
         } catch (IOException e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+    }
+
+    public void RegistrarAdmin(String Cedula, String name,String email,String password){
+        try{
+            File BaseDT = new File("output.txt");
+            FileWriter myWriter = new FileWriter(BaseDT, true);
+
+            myWriter.write(UserID + "\n"+ Cedula + "\n"+ "Admin" + "\n" +name + "\n" + email + "\n"+ password + "\n" );
+
+            myWriter.close();
+        } catch  (IOException e) {
             System.out.println("An error occurred: " + e.getMessage());
         }
     }
