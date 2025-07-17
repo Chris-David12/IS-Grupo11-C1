@@ -8,19 +8,31 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class controleRegister {
-    public controleRegister() {
-    }
+    public controleRegister() {}
 
+    Integer UserID = 1;
     public Boolean Validar(String data) {
+
         Boolean Flag = false;
+
         try {
             File BaseDT = new File("output.txt");
             Scanner myReader = new Scanner(BaseDT);
 
             while (myReader.hasNextLine()) {
+
                 String data1 = myReader.nextLine();
-                if (data1.equals(data)) {
-                    Flag = true;
+                try {
+                    if (UserID.equals(Integer.parseInt(data1))) {
+                        UserID += 1;
+                    }else if (data1.equals(data)) {
+                        Flag = true;
+                    }
+                } catch (NumberFormatException e) {
+                    
+                    if (data1.equals(data)) {
+                        Flag = true;
+                    }
                 }
             }
 
@@ -38,7 +50,7 @@ public class controleRegister {
             File BaseDT = new File("output.txt");
             FileWriter myWriter = new FileWriter(BaseDT, true);
 
-            myWriter.write(Cedula + "\n" + name + "\n" + email + "\n" + password + "\n");
+            myWriter.write(UserID + "\n"+ Cedula + "\n" +name + "\n" + email + "\n"+ password + "\n" );
 
             myWriter.close();
         } catch (IOException e) {

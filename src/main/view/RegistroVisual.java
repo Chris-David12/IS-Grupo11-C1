@@ -164,13 +164,14 @@ public class RegistroVisual extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!R.Validar(cedulaField.getText())) {
-                    R.Registrar(cedulaField.getText(), usuarioField.getText(), emailField.getText(),
-                            passField.getText());
+                R.Registrar(cedulaField.getText(), usuarioField.getText(), emailField.getText(),
+                passField.getText());
 
-                    String user = usuarioField.getText();
-                } else {
-
-                }
+                String user = usuarioField.getText();
+                JOptionPane.showMessageDialog(panelIzquierdo, "Bienvenido al sistema usuario " + user, "REGISTRO EXITOSO", JOptionPane.INFORMATION_MESSAGE);
+            }else{
+                JOptionPane.showMessageDialog(panelIzquierdo, "El usuario ya existe.", "ERROR", JOptionPane.INFORMATION_MESSAGE);
+            }
             }
         });
 
