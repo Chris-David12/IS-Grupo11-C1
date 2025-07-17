@@ -210,12 +210,11 @@ public class RegistroVisual extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 controleRegister R = new controleRegister();
                 if (!R.Validar(cedulaField.getText())) {
-                    R.Registrar(cedulaField.getText(), usuarioField.getText(), emailField.getText(),
-                            passField.getText());
-
+                    R.Registrar(cedulaField.getText(), usuarioField.getText(),
+                            emailField.getText(), passField.getText());
                     String user = usuarioField.getText();
                 } else {
-
+                    // Misma lógica para cuando ya existe
                 }
             }
         });
