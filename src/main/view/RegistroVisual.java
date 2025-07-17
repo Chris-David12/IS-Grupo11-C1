@@ -5,6 +5,7 @@ import main.controller.controleRegister;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.regex.Pattern;
 
 public class RegistroVisual extends JFrame {
 
@@ -208,13 +209,92 @@ public class RegistroVisual extends JFrame {
         entrarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Obtener los valores de los campos
+                String nombreApellido = usuarioField.getText().trim();
+                String cedula = cedulaField.getText().trim();
+                String email = emailField.getText().trim();
+                String contrasenia = new String(passField.getPassword());
+                String confirmacion = new String(confirmPassField.getPassword());
+
+                // Validar nombre y apellido (mínimo 24 caracteres, solo letras y espacios)
+                if (nombreApellido.length() < 12) {
+                    JOptionPane.showMessageDialog(RegistroVisual.this,
+                            "El nombre y apellido deben tener al menos 12 caracteres.",
+                            "Error de validación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                if (!Pattern.matches("^[a-zA-Z\\sáéíóúÁÉÍÓÚñÑ]+$", nombreApellido)) {
+                    JOptionPane.showMessageDialog(RegistroVisual.this,
+                            "El nombre no debe contener caracteres especiales ni números.",
+                            "Error de validación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Validar cédula (solo números)
+                if (!Pattern.matches("^\\d+$", cedula)) {
+                    JOptionPane.showMessageDialog(RegistroVisual.this,
+                            "La cédula solo debe contener números.",
+                            "Error de validación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Validar email
+                if (!Pattern.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$", email)) {
+                    JOptionPane.showMessageDialog(RegistroVisual.this,
+                            "Por favor ingrese un correo electrónico válido.",
+                            "Error de validación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Validar contraseña
+                if (contrasenia.length() < 8) {
+                    JOptionPane.showMessageDialog(RegistroVisual.this,
+                            "La contraseña debe tener al menos 8 caracteres.",
+                            "Error de validación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                if (!Pattern.matches(".*[A-Z].*", contrasenia)) {
+                    JOptionPane.showMessageDialog(RegistroVisual.this,
+                            "La contraseña debe contener al menos una mayúscula.",
+                            "Error de validación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                if (!Pattern.matches(".*\\d.*", contrasenia)) {
+                    JOptionPane.showMessageDialog(RegistroVisual.this,
+                            "La contraseña debe contener al menos un número.",
+                            "Error de validación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                if (!Pattern.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*", contrasenia)) {
+                    JOptionPane.showMessageDialog(RegistroVisual.this,
+                            "La contraseña debe contener al menos un caracter especial.",
+                            "Error de validación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Validar coincidencia de contraseñas
+                if (!contrasenia.equals(confirmacion)) {
+                    JOptionPane.showMessageDialog(RegistroVisual.this,
+                            "Las contraseñas no coinciden.",
+                            "Error de validación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Si todas las validaciones pasan, proceder con el registro
                 controleRegister R = new controleRegister();
-                if (!R.Validar(cedulaField.getText())) {
-                    R.Registrar(cedulaField.getText(), usuarioField.getText(),
-                            emailField.getText(), passField.getText());
-                    String user = usuarioField.getText();
+                if (!R.Validar(cedula)) {
+                    R.Registrar(cedula, nombreApellido, email, contrasenia);
+                    JOptionPane.showMessageDialog(RegistroVisual.this,
+                            "Registro exitoso. Bienvenido " + nombreApellido,
+                            "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    // Misma lógica para cuando ya existe
+                    JOptionPane.showMessageDialog(RegistroVisual.this,
+                            "El usuario ya existe.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
