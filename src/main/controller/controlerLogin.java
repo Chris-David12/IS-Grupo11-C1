@@ -1,6 +1,5 @@
 package main.controller;
 
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -8,21 +7,19 @@ import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class controlerLogin{
-    public controlerLogin(){}
+public class controlerLogin {
+    public controlerLogin() {
+    }
 
-    
-
-    Boolean Validar(String User, String password){
+    public Boolean Validar(String User, String password) {
         Boolean Flag = false;
         Integer UserID = 1;
-        try{
+        try {
             File BaseDT = new File("output.txt");
             Scanner myReader = new Scanner(BaseDT);
             String data1 = myReader.nextLine();
 
-            
-            while (myReader.hasNextLine()){
+            while (myReader.hasNextLine()) {
 
                 Integer auxInt = null;
                 try {
@@ -35,21 +32,22 @@ public class controlerLogin{
                 }
 
                 if (data1.equals(User)) {
-                    data1  = myReader.nextLine();
-                    if (data1.equals(password)) {
-                       CrearInstancia(UserID, BaseDT);
-                        Flag = true;
-                        break; 
-                    }else{
-                        break;
+                    while (myReader.hasNextLine()) {
+                        data1 = myReader.nextLine();
+                        if (data1.equals(password)) {
+                            CrearInstancia(UserID, BaseDT);
+                            Flag = true;
+                            break;
+                        }
                     }
+                    break;
                 }
                 data1 = myReader.nextLine();
 
             }
 
             myReader.close();
-            
+
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
@@ -57,16 +55,16 @@ public class controlerLogin{
         return Flag;
     }
 
-    void CrearInstancia(Integer UserID, File BaseDT){
-        try{
-            
+    void CrearInstancia(Integer UserID, File BaseDT) {
+        try {
+
             Scanner mScanner = new Scanner(BaseDT);
             File Instancia = new File("Instancia.txt");
             FileWriter myWriter = new FileWriter(Instancia);
             String Data = "";
             String data1 = "";
 
-            while (mScanner.hasNextLine()){
+            while (mScanner.hasNextLine()) {
                 data1 = mScanner.nextLine();
                 Integer auxInt = null;
                 try {
@@ -95,8 +93,36 @@ public class controlerLogin{
             myWriter.write(Data + "\n");
             mScanner.close();
             myWriter.close();
-        } catch  (IOException e) {
+        } catch (IOException e) {
             System.out.println("An error occurred: " + e.getMessage());
         }
+    }
+
+    public String detectarRol() {
+        String rol = null;
+
+        try {
+            File instanciaFile = new File("Instancia.txt");
+            if (!instanciaFile.exists()) {
+                return rol;
+            }
+
+            Scanner scanner = new Scanner(instanciaFile);
+
+            while (scanner.hasNextLine()) {
+                String linea = scanner.nextLine().trim();
+
+                if (linea.equals("Comensal") || linea.equals("Admin")) {
+                    rol = linea.trim();
+                    break;
+                }
+            }
+
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Error al leer el archivo de instancia: " + e.getMessage());
+        }
+
+        return rol;
     }
 }

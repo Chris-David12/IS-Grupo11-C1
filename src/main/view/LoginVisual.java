@@ -1,10 +1,11 @@
 import javax.swing.*;
 
-import main.controller.controleRegister;
+import main.controller.controlerLogin;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.ModuleLayer.Controller;
 import java.util.regex.Pattern;
 
 public class LoginVisual extends JFrame {
@@ -27,7 +28,7 @@ public class LoginVisual extends JFrame {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g;
-                ImageIcon fondo = new ImageIcon("assets/comedor(1).jpeg");
+                ImageIcon fondo = new ImageIcon("../assets/comedor(1).jpeg");
                 g2d.drawImage(fondo.getImage(), 0, 0, getWidth(), getHeight(), this);
                 g2d.setColor(new Color(16, 198, 90, 120));
                 g2d.fillRect(0, 0, getWidth(), getHeight());
@@ -35,7 +36,7 @@ public class LoginVisual extends JFrame {
         };
         panelIzquierdo.setLayout(new GridBagLayout());
 
-        ImageIcon iconoOriginal = new ImageIcon("assets/logo.png");
+        ImageIcon iconoOriginal = new ImageIcon("../assets/logo.png");
         Image imagenOriginal = iconoOriginal.getImage();
         Image imagenEscalada = imagenOriginal.getScaledInstance(250, 250, Image.SCALE_SMOOTH);
         ImageIcon iconoFinal = new ImageIcon(imagenEscalada);
@@ -83,7 +84,7 @@ public class LoginVisual extends JFrame {
         gbcForm.insets = new Insets(10, 40, 5, 40);
 
         // NOMBRE Y APELLIDO
-        JLabel usuarioLabel = new JLabel("NOMBRE Y APELLIDO:");
+        JLabel usuarioLabel = new JLabel("CEDULA");
         usuarioLabel.setFont(new Font("Roboto Light", Font.BOLD, 20));
         usuarioLabel.setForeground(Color.WHITE);
         gbcForm.gridy++;
@@ -153,26 +154,55 @@ public class LoginVisual extends JFrame {
         entrarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String nombreApellido = usuarioField.getText().trim();
+                String cedula = usuarioField.getText().trim();
                 String contrasenia = new String(passField.getPassword());
 
-                if (nombreApellido.isEmpty() || contrasenia.isEmpty()) {
+                // Validar que no estén vacíos
+                if (cedula.isEmpty() || contrasenia.isEmpty()) {
                     JOptionPane.showMessageDialog(LoginVisual.this,
                             "Por favor, complete ambos campos.",
                             "Error de validación", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
-                // Aquí deberías validar contra tu base de datos o lógica de autenticación
-                // Ejemplo simple:
-                if (nombreApellido.equals("admin") && contrasenia.equals("Admin123!")) {
+                // Validar que el usuario solo contenga números
+                if (!Pattern.matches("^\\d+$", cedula)) {
                     JOptionPane.showMessageDialog(LoginVisual.this,
-                            "Inicio de sesión exitoso. ¡Bienvenido " + nombreApellido + "!",
+                            "El nombre de usuario debe contener solo números (cédula).",
+                            "Error de validación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Aquí iría la lógica real de autenticación
+                controlerLogin controlador = new controlerLogin();
+                if (controlador.Validar(cedula, contrasenia)) {
+                    JOptionPane.showMessageDialog(LoginVisual.this,
+                            "Inicio de sesión exitoso. ¡Bienvenido!",
                             "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    String rolview = null;
+                    rolview = controlador.detectarRol();
+                    if (rolview.equals("Comensal")) {
+                        JOptionPane.showMessageDialog(LoginVisual.this, "eres comensal", "LOGIN EXITOSO",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(LoginVisual.this, "eres admin", "LOGIN EXITOSO",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    }
                 } else {
                     JOptionPane.showMessageDialog(LoginVisual.this,
-                            "Nombre y/o contraseña incorrectos.",
+                            "Cédula y/o contraseña incorrectos.",
                             "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        // Agregar validador en tiempo real para solo permitir números
+        usuarioField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+                if (!Character.isDigit(c)) {
+                    evt.consume(); // Ignorar el caracter si no es número
+                    getToolkit().beep(); // Sonido de alerta
                 }
             }
         });

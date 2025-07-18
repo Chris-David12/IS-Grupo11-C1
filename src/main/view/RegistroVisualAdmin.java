@@ -181,7 +181,7 @@ public class RegistroVisualAdmin extends JFrame {
         formularioPanel.add(buttonPanel, gbcForm);
 
         // Botón de registro (mismo texto y colores)
-        entrarButton = new JButton("Entrar");
+        entrarButton = new JButton("Registrarse");
         entrarButton.setPreferredSize(new Dimension(200, 45));
         entrarButton.setBackground(new Color(70, 130, 180));
         entrarButton.setForeground(Color.WHITE);
