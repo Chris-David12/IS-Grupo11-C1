@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.regex.Pattern;
 
-public class RegistroVisualUser extends JFrame {
+public class RegistroVisualAdmin extends JFrame {
 
     // Mantener las mismas variables de instancia para los campos
     private JTextField usuarioField;
@@ -17,7 +17,7 @@ public class RegistroVisualUser extends JFrame {
     private JPasswordField confirmPassField;
     private JButton entrarButton;
 
-    public RegistroVisualUser() {
+    public RegistroVisualAdmin() {
         setTitle("Comedor Estudiantil");
         setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximizar por defecto
         setMinimumSize(new Dimension(1024, 768)); // Tamaño mínimo
@@ -222,7 +222,7 @@ public class RegistroVisualUser extends JFrame {
                 }
 
                 if (!Pattern.matches("^[a-zA-Z\\sáéíóúÁÉÍÓÚñÑ]+$", nombreApellido)) {
-                    JOptionPane.showMessageDialog(RegistroVisualUser.this,
+                    JOptionPane.showMessageDialog(RegistroVisualAdmin.this,
                             "El nombre no debe contener caracteres especiales ni números.",
                             "Error de validación", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -230,7 +230,7 @@ public class RegistroVisualUser extends JFrame {
 
                 // Validar cédula (solo números)
                 if (!Pattern.matches("^\\d+$", cedula)) {
-                    JOptionPane.showMessageDialog(RegistroVisualUser.this,
+                    JOptionPane.showMessageDialog(RegistroVisualAdmin.this,
                             "La cédula solo debe contener números.",
                             "Error de validación", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -246,28 +246,28 @@ public class RegistroVisualUser extends JFrame {
 
                 // Validar contraseña
                 if (contrasenia.length() < 8) {
-                    JOptionPane.showMessageDialog(RegistroVisualUser.this,
+                    JOptionPane.showMessageDialog(RegistroVisualAdmin.this,
                             "La contraseña debe tener al menos 8 caracteres.",
                             "Error de validación", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
                 if (!Pattern.matches(".*[A-Z].*", contrasenia)) {
-                    JOptionPane.showMessageDialog(RegistroVisualUser.this,
+                    JOptionPane.showMessageDialog(RegistroVisualAdmin.this,
                             "La contraseña debe contener al menos una mayúscula.",
                             "Error de validación", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
                 if (!Pattern.matches(".*\\d.*", contrasenia)) {
-                    JOptionPane.showMessageDialog(RegistroVisualUser.this,
+                    JOptionPane.showMessageDialog(RegistroVisualAdmin.this,
                             "La contraseña debe contener al menos un número.",
                             "Error de validación", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
                 if (!Pattern.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*", contrasenia)) {
-                    JOptionPane.showMessageDialog(RegistroVisualUser.this,
+                    JOptionPane.showMessageDialog(RegistroVisualAdmin.this,
                             "La contraseña debe contener al menos un caracter especial.",
                             "Error de validación", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -275,7 +275,7 @@ public class RegistroVisualUser extends JFrame {
 
                 // Validar coincidencia de contraseñas
                 if (!contrasenia.equals(confirmacion)) {
-                    JOptionPane.showMessageDialog(RegistroVisualUser.this,
+                    JOptionPane.showMessageDialog(RegistroVisualAdmin.this,
                             "Las contraseñas no coinciden.",
                             "Error de validación", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -285,11 +285,11 @@ public class RegistroVisualUser extends JFrame {
                 controleRegister R = new controleRegister();
                 if (!R.Validar(cedula)) {
                     R.RegistrarUser(cedula, nombreApellido, email, contrasenia);
-                    JOptionPane.showMessageDialog(RegistroVisualUser.this,
+                    JOptionPane.showMessageDialog(RegistroVisualAdmin.this,
                             "Registro exitoso. Bienvenido " + nombreApellido,
                             "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(RegistroVisualUser.this,
+                    JOptionPane.showMessageDialog(RegistroVisualAdmin.this,
                             "El usuario ya existe.",
                             "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -301,7 +301,7 @@ public class RegistroVisualUser extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            new RegistroVisualUser();
+            new RegistroVisualAdmin();
         });
     }
 }
