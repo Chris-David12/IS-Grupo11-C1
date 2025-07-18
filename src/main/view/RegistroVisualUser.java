@@ -288,6 +288,10 @@ public class RegistroVisualUser extends JFrame {
                     JOptionPane.showMessageDialog(RegistroVisualUser.this,
                             "Registro exitoso. Bienvenido " + nombreApellido,
                             "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+                            LoginVisual loginV = new LoginVisual();
+                            loginV.setVisible(true);
+                            dispose();
                 } else {
                     JOptionPane.showMessageDialog(RegistroVisualUser.this,
                             "El usuario ya existe.",

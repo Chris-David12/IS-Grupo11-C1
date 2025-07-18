@@ -1,5 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
+
+import main.controller.controlerInicioUser;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.border.EmptyBorder;
@@ -93,17 +96,17 @@ public class InicioVisual extends JFrame {
         panelBotones.setLayout(new BoxLayout(panelBotones, BoxLayout.Y_AXIS));
         panelBotones.setBorder(new EmptyBorder(60, 0, 0, 50)); // 50px margen derecho
 
-        JButton botonRegistro = new JButton("REGISTRARSE");
-        botonRegistro.setFont(new Font("Roboto", Font.BOLD, 18));
-        botonRegistro.setBackground(new Color(21, 174, 92));
-        botonRegistro.setForeground(Color.WHITE);
-        botonRegistro.setBorderPainted(false);
-        botonRegistro.setFocusPainted(false);
-        botonRegistro.setMaximumSize(new Dimension(200, 40));
-        botonRegistro.setPreferredSize(new Dimension(200, 40));
-        botonRegistro.setMinimumSize(new Dimension(200, 40));
+        controlerInicioUser cLU = new controlerInicioUser();
 
-        JButton botonLogin = new JButton("INGRESAR");
+        JLabel nombre = new JLabel("Saldo: " + String.valueOf(cLU.saldo) + " Bs");
+        nombre.setFont(new Font("Roboto", Font.BOLD, 18));
+        nombre.setBackground(new Color(21, 174, 92));
+        nombre.setForeground(Color.WHITE);
+        nombre.setMaximumSize(new Dimension(200, 40));
+        nombre.setPreferredSize(new Dimension(200, 40));
+        nombre.setMinimumSize(new Dimension(200, 40));
+
+        JButton botonLogin = new JButton("CERRAR SESIÓN");
         botonLogin.setFont(new Font("Roboto", Font.BOLD, 18));
         botonLogin.setBackground(new Color(48, 43, 47));
         botonLogin.setForeground(Color.WHITE);
@@ -113,7 +116,7 @@ public class InicioVisual extends JFrame {
         botonLogin.setPreferredSize(new Dimension(200, 40));
         botonLogin.setMinimumSize(new Dimension(200, 40));
 
-        panelBotones.add(botonRegistro);
+        panelBotones.add(nombre);
         panelBotones.add(Box.createRigidArea(new Dimension(0, 10))); // separación vertical
         panelBotones.add(botonLogin);
 
@@ -133,6 +136,16 @@ public class InicioVisual extends JFrame {
         // Agrega el panel del subtítulo debajo del panel superior
         add(contenedorSuperior);
         add(panelSubtitulo);
+
+        botonLogin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                LoginVisual loginV = new LoginVisual();
+                loginV.setVisible(true);
+                dispose();
+            }
+
+        });
 
         // Panel contenedor general
         JPanel panelCartasContenedor = new JPanel(new BorderLayout());

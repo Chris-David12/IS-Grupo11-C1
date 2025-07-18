@@ -176,17 +176,17 @@ public class LoginVisual extends JFrame {
                 // Aquí iría la lógica real de autenticación
                 controlerLogin controlador = new controlerLogin();
                 if (controlador.Validar(cedula, contrasenia)) {
-                    JOptionPane.showMessageDialog(LoginVisual.this,
-                            "Inicio de sesión exitoso. ¡Bienvenido!",
-                            "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    
                     String rolview = null;
                     rolview = controlador.detectarRol();
                     if (rolview.equals("Comensal")) {
-                        JOptionPane.showMessageDialog(LoginVisual.this, "eres comensal", "LOGIN EXITOSO",
-                                JOptionPane.INFORMATION_MESSAGE);
+                        InicioVisual inicioV = new InicioVisual();
+                        inicioV.setVisible(true);
+                        dispose();
                     } else {
-                        JOptionPane.showMessageDialog(LoginVisual.this, "eres admin", "LOGIN EXITOSO",
-                                JOptionPane.INFORMATION_MESSAGE);
+                        InicioVisualAdmin inicioVA = new InicioVisualAdmin();
+                        inicioVA.setVisible(true);
+                        dispose();
                     }
                 } else {
                     JOptionPane.showMessageDialog(LoginVisual.this,

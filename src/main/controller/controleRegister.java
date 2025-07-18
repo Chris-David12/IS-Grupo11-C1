@@ -50,7 +50,8 @@ public class controleRegister {
             File BaseDT = new File("output.txt");
             FileWriter myWriter = new FileWriter(BaseDT, true);
 
-            myWriter.write(UserID + "\n"+ Cedula + "\n" + "Comensal" + "\n" +name + "\n" + email + "\n"+ password + "\n" );
+            myWriter.write(UserID + "\n"+ Cedula + "\n" + "Comensal" + "\n" +name + "\n" + email + "\n"+ password + "\n"  + "0.00" + "\n");
+
 
             myWriter.close();
         } catch (IOException e) {

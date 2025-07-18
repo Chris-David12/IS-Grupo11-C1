@@ -284,10 +284,14 @@ public class RegistroVisualAdmin extends JFrame {
                 // Si todas las validaciones pasan, proceder con el registro
                 controleRegister R = new controleRegister();
                 if (!R.Validar(cedula)) {
-                    R.RegistrarUser(cedula, nombreApellido, email, contrasenia);
+                    R.RegistrarAdmin(cedula, nombreApellido, email, contrasenia);
                     JOptionPane.showMessageDialog(RegistroVisualAdmin.this,
                             "Registro exitoso. Bienvenido " + nombreApellido,
                             "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+                            LoginVisual loginV = new LoginVisual();
+                            loginV.setVisible(true);
+                            dispose();
                 } else {
                     JOptionPane.showMessageDialog(RegistroVisualAdmin.this,
                             "El usuario ya existe.",

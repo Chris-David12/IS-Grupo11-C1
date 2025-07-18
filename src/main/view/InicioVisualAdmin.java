@@ -1,5 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
+
+import main.controller.controlerInicioUser;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.border.EmptyBorder;
@@ -93,7 +96,9 @@ public class InicioVisualAdmin extends JFrame {
         panelBotones.setLayout(new BoxLayout(panelBotones, BoxLayout.Y_AXIS));
         panelBotones.setBorder(new EmptyBorder(60, 0, 0, 50)); // 50px margen derecho
 
-        JButton NameAdmin = new JButton("YOAN (SOY ADMIN ;:V)");
+        controlerInicioUser cLU = new controlerInicioUser();
+
+        JButton NameAdmin = new JButton(cLU.usuario);
         NameAdmin.setFont(new Font("Roboto", Font.BOLD, 18));
         NameAdmin.setBackground(new Color(21, 174, 92));
         NameAdmin.setForeground(Color.WHITE);
@@ -103,7 +108,7 @@ public class InicioVisualAdmin extends JFrame {
         NameAdmin.setPreferredSize(new Dimension(200, 40));
         NameAdmin.setMinimumSize(new Dimension(200, 40));
 
-        JButton botonLogin = new JButton("Cerrar sesion");
+        JButton botonLogin = new JButton("CERRAR SESIÓN");
         botonLogin.setFont(new Font("Roboto", Font.BOLD, 18));
         botonLogin.setBackground(new Color(48, 43, 47));
         botonLogin.setForeground(Color.WHITE);
@@ -173,6 +178,16 @@ public class InicioVisualAdmin extends JFrame {
         add(contenedorSuperior);
         add(panelSubtitulo1);
         add(panelSubtitulo2);
+
+        botonLogin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                LoginVisual loginV = new LoginVisual();
+                loginV.setVisible(true);
+                dispose();
+            }
+
+        });
     }
 
     public static void main(String[] args) {
