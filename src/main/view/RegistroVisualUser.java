@@ -32,7 +32,7 @@ public class RegistroVisualUser extends JFrame {
                 Graphics2D g2d = (Graphics2D) g;
 
                 // 🔧 Dibujar imagen de fondo (misma funcionalidad)
-                ImageIcon fondo = new ImageIcon("../assets/comedor(2).jpg");
+                ImageIcon fondo = new ImageIcon("assets/comedor(2).jpeg");
                 g2d.drawImage(fondo.getImage(), 0, 0, getWidth(), getHeight(), this);
 
                 // 🌫️ Capa semi-transparente (mismo color)
@@ -43,7 +43,7 @@ public class RegistroVisualUser extends JFrame {
         panelIzquierdo.setLayout(new GridBagLayout());
 
         // Logo (misma imagen)
-        ImageIcon iconoOriginal = new ImageIcon("../assets/logo.png");
+        ImageIcon iconoOriginal = new ImageIcon("assets/logo.png");
         Image imagenOriginal = iconoOriginal.getImage();
         Image imagenEscalada = imagenOriginal.getScaledInstance(250, 250, Image.SCALE_SMOOTH);
         ImageIcon iconoFinal = new ImageIcon(imagenEscalada);
@@ -94,6 +94,8 @@ public class RegistroVisualUser extends JFrame {
         gbcForm.insets = new Insets(10, 40, 5, 40);
 
         // Campos del formulario (los mismos que antes)
+        Dimension campoDimension = new Dimension(500, 30); // Tamaño fijo para todos
+
         // NOMBRE Y APELLIDO
         JLabel usuarioLabel = new JLabel("NOMBRE Y APELLIDO:");
         usuarioLabel.setFont(new Font("Roboto Light", Font.BOLD, 20));
@@ -105,12 +107,11 @@ public class RegistroVisualUser extends JFrame {
         usuarioField.setBackground(new Color(96, 96, 96));
         usuarioField.setForeground(Color.WHITE);
         usuarioField.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        usuarioField.setPreferredSize(campoDimension);
         gbcForm.gridy++;
-        gbcForm.fill = GridBagConstraints.HORIZONTAL;
-        gbcForm.weightx = 1.0;
-        formularioPanel.add(usuarioField, gbcForm);
         gbcForm.fill = GridBagConstraints.NONE;
         gbcForm.weightx = 0.0;
+        formularioPanel.add(usuarioField, gbcForm);
 
         // CÉDULA
         JLabel cedulaLabel = new JLabel("CÉDULA:");
@@ -123,10 +124,9 @@ public class RegistroVisualUser extends JFrame {
         cedulaField.setBackground(new Color(96, 96, 96));
         cedulaField.setForeground(Color.WHITE);
         cedulaField.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        cedulaField.setPreferredSize(campoDimension);
         gbcForm.gridy++;
-        gbcForm.fill = GridBagConstraints.HORIZONTAL;
         formularioPanel.add(cedulaField, gbcForm);
-        gbcForm.fill = GridBagConstraints.NONE;
 
         // CORREO ELECTRÓNICO
         JLabel emailLabel = new JLabel("CORREO ELECTRÓNICO:");
@@ -139,10 +139,9 @@ public class RegistroVisualUser extends JFrame {
         emailField.setBackground(new Color(96, 96, 96));
         emailField.setForeground(Color.WHITE);
         emailField.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        emailField.setPreferredSize(campoDimension);
         gbcForm.gridy++;
-        gbcForm.fill = GridBagConstraints.HORIZONTAL;
         formularioPanel.add(emailField, gbcForm);
-        gbcForm.fill = GridBagConstraints.NONE;
 
         // CONTRASEÑA
         JLabel passLabel = new JLabel("CONTRASEÑA:");
@@ -155,10 +154,9 @@ public class RegistroVisualUser extends JFrame {
         passField.setBackground(new Color(96, 96, 96));
         passField.setForeground(Color.WHITE);
         passField.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        passField.setPreferredSize(campoDimension);
         gbcForm.gridy++;
-        gbcForm.fill = GridBagConstraints.HORIZONTAL;
         formularioPanel.add(passField, gbcForm);
-        gbcForm.fill = GridBagConstraints.NONE;
 
         // CONFIRMAR CONTRASEÑA
         JLabel confirmPassLabel = new JLabel("CONFIRMAR CONTRASEÑA:");
@@ -171,12 +169,11 @@ public class RegistroVisualUser extends JFrame {
         confirmPassField.setBackground(new Color(96, 96, 96));
         confirmPassField.setForeground(Color.WHITE);
         confirmPassField.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        confirmPassField.setPreferredSize(campoDimension);
         gbcForm.gridy++;
-        gbcForm.fill = GridBagConstraints.HORIZONTAL;
         formularioPanel.add(confirmPassField, gbcForm);
-        gbcForm.fill = GridBagConstraints.NONE;
 
-        // Panel de botones (misma funcionalidad)
+        // Panel de botones (sin cambios)
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         buttonPanel.setBackground(new Color(39, 39, 39));
         gbcForm.gridy++;
