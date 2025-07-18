@@ -22,7 +22,7 @@ public class LoginVisual extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Panel izquierdo (igual)
+        // Panel izquierdo
         JPanel panelIzquierdo = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -134,7 +134,7 @@ public class LoginVisual extends JFrame {
         entrarButton.setFont(new Font("Arial", Font.BOLD, 20));
         buttonPanel.add(entrarButton);
 
-        // Texto "ya tienes cuenta" (mismo texto y estilo)
+        // Texto "ya tienes cuenta"
         JLabel cuentaLabel = new JLabel(
                 "<html><span style='color:#CCCCCC;'>¿No tienes una cuenta? </span>" +
                         "<span style='color:#4FC3F7;'><u>Registrate</u></span></html>");
@@ -143,8 +143,8 @@ public class LoginVisual extends JFrame {
         buttonPanel.add(cuentaLabel);
 
         // Agregar los paneles principales
-        // Cambiado el orden: primero panelDerecho (login), luego panelIzquierdo
-        // (imagen/logo)
+        // Cambiado el orden: primero panelDerecho login, luego panelIzquierdo
+        // imagen/logo
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelDerecho, panelIzquierdo);
         splitPane.setResizeWeight(0.5);
         splitPane.setDividerSize(0);
@@ -176,7 +176,7 @@ public class LoginVisual extends JFrame {
                 // Aquí iría la lógica real de autenticación
                 controlerLogin controlador = new controlerLogin();
                 if (controlador.Validar(cedula, contrasenia)) {
-                    
+
                     String rolview = null;
                     rolview = controlador.detectarRol();
                     if (rolview.equals("Comensal")) {

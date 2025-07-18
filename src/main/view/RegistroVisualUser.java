@@ -24,25 +24,25 @@ public class RegistroVisualUser extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // 👉 Panel izquierdo: fondo + logo + título (igual funcionalidad)
+        // 👉 Panel izquierdo: fondo + logo + título
         JPanel panelIzquierdo = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g;
 
-                // 🔧 Dibujar imagen de fondo (misma funcionalidad)
+                // 🔧 Dibujar imagen de fondo
                 ImageIcon fondo = new ImageIcon("assets/comedor(2).jpeg");
                 g2d.drawImage(fondo.getImage(), 0, 0, getWidth(), getHeight(), this);
 
-                // 🌫️ Capa semi-transparente (mismo color)
+                // 🌫️ Capa semi-transparente
                 g2d.setColor(new Color(16, 198, 90, 120));
                 g2d.fillRect(0, 0, getWidth(), getHeight());
             }
         };
         panelIzquierdo.setLayout(new GridBagLayout());
 
-        // Logo (misma imagen)
+        // Logo
         ImageIcon iconoOriginal = new ImageIcon("assets/logo.png");
         Image imagenOriginal = iconoOriginal.getImage();
         Image imagenEscalada = imagenOriginal.getScaledInstance(250, 250, Image.SCALE_SMOOTH);
@@ -55,19 +55,19 @@ public class RegistroVisualUser extends JFrame {
         gbc.insets = new Insets(0, 0, 30, 0);
         panelIzquierdo.add(logo, gbc);
 
-        // Nombre del sistema (mismo texto)
+        // Nombre del sistema
         JLabel nombreSistema = new JLabel("COMEDOR ESTUDIANTIL");
         nombreSistema.setFont(new Font("Roboto Black", Font.BOLD, 34));
         nombreSistema.setForeground(Color.WHITE);
         gbc.gridy = 1;
         panelIzquierdo.add(nombreSistema, gbc);
 
-        // 👉 Panel derecho: formulario (misma estructura)
+        // 👉 Panel derecho: formulario
         JPanel panelDerecho = new JPanel();
         panelDerecho.setBackground(new Color(39, 39, 39));
         panelDerecho.setLayout(new BorderLayout());
 
-        // Panel de título (mismo color y texto)
+        // Panel de título
         JPanel panelTitulo = new JPanel();
         panelTitulo.setBackground(new Color(119, 182, 201));
         panelTitulo.setPreferredSize(new Dimension(0, 90));
@@ -78,7 +78,7 @@ public class RegistroVisualUser extends JFrame {
         panelTitulo.add(title);
         panelDerecho.add(panelTitulo, BorderLayout.NORTH);
 
-        // Panel de formulario (mismos campos)
+        // Panel de formulario
         JPanel formularioPanel = new JPanel();
         formularioPanel.setBackground(new Color(39, 39, 39));
         formularioPanel.setLayout(new GridBagLayout());
@@ -180,7 +180,7 @@ public class RegistroVisualUser extends JFrame {
         gbcForm.fill = GridBagConstraints.HORIZONTAL;
         formularioPanel.add(buttonPanel, gbcForm);
 
-        // Botón de registro (mismo texto y colores)
+        // Botón de registro
         entrarButton = new JButton("Registrarse");
         entrarButton.setPreferredSize(new Dimension(200, 45));
         entrarButton.setBackground(new Color(70, 130, 180));
@@ -188,7 +188,7 @@ public class RegistroVisualUser extends JFrame {
         entrarButton.setFont(new Font("Arial", Font.BOLD, 20));
         buttonPanel.add(entrarButton);
 
-        // Texto "ya tienes cuenta" (mismo texto y estilo)
+        // Texto "ya tienes cuenta"
         JLabel cuentaLabel = new JLabel(
                 "<html><span style='color:#CCCCCC;'>¿Ya tienes una cuenta? Haz click </span>" +
                         "<span style='color:#4FC3F7;'><u>aquí</u></span></html>");
@@ -236,7 +236,7 @@ public class RegistroVisualUser extends JFrame {
                     return;
                 }
 
-                // Validar email
+                // Validar email (debe ser valido)
                 if (!Pattern.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$", email)) {
                     JOptionPane.showMessageDialog(RegistroVisualUser.this,
                             "Por favor ingrese un correo electrónico válido.",
@@ -244,7 +244,7 @@ public class RegistroVisualUser extends JFrame {
                     return;
                 }
 
-                // Validar contraseña
+                // Validar contraseña (al menos una mayuscula, un numero y un caracter especial)
                 if (contrasenia.length() < 8) {
                     JOptionPane.showMessageDialog(RegistroVisualUser.this,
                             "La contraseña debe tener al menos 8 caracteres.",
@@ -289,9 +289,9 @@ public class RegistroVisualUser extends JFrame {
                             "Registro exitoso. Bienvenido " + nombreApellido,
                             "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
-                            LoginVisual loginV = new LoginVisual();
-                            loginV.setVisible(true);
-                            dispose();
+                    LoginVisual loginV = new LoginVisual();
+                    loginV.setVisible(true);
+                    dispose();
                 } else {
                     JOptionPane.showMessageDialog(RegistroVisualUser.this,
                             "El usuario ya existe.",
