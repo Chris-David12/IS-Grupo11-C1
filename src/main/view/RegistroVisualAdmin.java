@@ -215,7 +215,7 @@ public class RegistroVisualAdmin extends JFrame {
 
                 // Validar nombre y apellido (mínimo 24 caracteres, solo letras y espacios)
                 if (nombreApellido.length() < 12) {
-                    JOptionPane.showMessageDialog(RegistroVisualUser.this,
+                    JOptionPane.showMessageDialog(RegistroVisualAdmin.this,
                             "El nombre y apellido deben tener al menos 12 caracteres.",
                             "Error de validación", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -238,7 +238,7 @@ public class RegistroVisualAdmin extends JFrame {
 
                 // Validar email
                 if (!Pattern.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$", email)) {
-                    JOptionPane.showMessageDialog(RegistroVisualUser.this,
+                    JOptionPane.showMessageDialog(RegistroVisualAdmin.this,
                             "Por favor ingrese un correo electrónico válido.",
                             "Error de validación", JOptionPane.ERROR_MESSAGE);
                     return;
