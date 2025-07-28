@@ -1,6 +1,8 @@
 import javax.swing.*;
 
 import main.controller.controlerLogin;
+import main.model.RoundedPasswordField;
+import main.model.RoundedTextField;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,6 +15,8 @@ public class LoginVisual extends JFrame {
     // Mantener las mismas variables de instancia para los campos
     private JTextField usuarioField;
     private JPasswordField passField;
+    private RoundedTextField rounded;
+    private RoundedPasswordField passRounded;
     private JButton entrarButton;
 
     public LoginVisual() {
@@ -90,10 +94,12 @@ public class LoginVisual extends JFrame {
         gbcForm.gridy++;
         formularioPanel.add(usuarioLabel, gbcForm);
 
-        usuarioField = new JTextField();
+        usuarioField = new RoundedTextField(40, 15, 15); // 15 es el radio de redondeo
         usuarioField.setBackground(new Color(96, 96, 96));
         usuarioField.setForeground(Color.WHITE);
-        usuarioField.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        usuarioField.setBorder(BorderFactory.createCompoundBorder(
+                usuarioField.getBorder(),
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)));
         usuarioField.setPreferredSize(new Dimension(500, 30)); // Tamaño constante
 
         gbcForm.gridy++;
@@ -108,10 +114,12 @@ public class LoginVisual extends JFrame {
         gbcForm.gridy++;
         formularioPanel.add(passLabel, gbcForm);
 
-        passField = new JPasswordField();
+        passField = new RoundedPasswordField(40, 15, 15);
         passField.setBackground(new Color(96, 96, 96));
         passField.setForeground(Color.WHITE);
-        passField.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        passField.setBorder(BorderFactory.createCompoundBorder(
+                passField.getBorder(),
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)));
         passField.setPreferredSize(new Dimension(500, 30)); // Tamaño constante
 
         gbcForm.gridy++;
@@ -127,7 +135,31 @@ public class LoginVisual extends JFrame {
         formularioPanel.add(buttonPanel, gbcForm);
 
         // Botón de entrar
-        entrarButton = new JButton("Entrar");
+        entrarButton = new JButton("Entrar") {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                g2.setColor(getBackground());
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
+
+                super.paintComponent(g2);
+                g2.dispose();
+            }
+
+            @Override
+            protected void paintBorder(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                g2.setColor(getForeground());
+                g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
+                g2.dispose();
+            }
+        };
+        entrarButton.setContentAreaFilled(false);
+        entrarButton.setOpaque(false);
         entrarButton.setPreferredSize(new Dimension(200, 45));
         entrarButton.setBackground(new Color(70, 130, 180));
         entrarButton.setForeground(Color.WHITE);
@@ -140,6 +172,31 @@ public class LoginVisual extends JFrame {
                         "<span style='color:#4FC3F7;'><u>Registrate</u></span></html>");
         cuentaLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         cuentaLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // Añadir MouseListener para redirigir a RegistroVisualUser
+        cuentaLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                // Crear y mostrar la ventana de registro
+                RegistroVisualUser registroV = new RegistroVisualUser();
+                registroV.setVisible(true);
+                // Cerrar la ventana actual
+                dispose();
+            }
+
+            // Cambiar color al pasar el mouse para mejor feedback visual
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                cuentaLabel.setText(
+                        "<html><span style='color:#CCCCCC;'>¿No tienes una cuenta? </span>" +
+                                "<span style='color:#64B5F6;'><u>Registrate</u></span></html>");
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                cuentaLabel.setText(
+                        "<html><span style='color:#CCCCCC;'>¿No tienes una cuenta? </span>" +
+                                "<span style='color:#4FC3F7;'><u>Registrate</u></span></html>");
+            }
+        });
+
         buttonPanel.add(cuentaLabel);
 
         // Agregar los paneles principales

@@ -1,6 +1,8 @@
 import javax.swing.*;
 
 import main.controller.controleRegister;
+import main.model.RoundedPasswordField;
+import main.model.RoundedTextField;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,30 +21,25 @@ public class RegistroVisualUser extends JFrame {
 
     public RegistroVisualUser() {
         setTitle("Comedor Estudiantil");
-        setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximizar por defecto
-        setMinimumSize(new Dimension(1024, 768)); // Tamaño mínimo
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setMinimumSize(new Dimension(1024, 768));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // 👉 Panel izquierdo: fondo + logo + título
+        // Panel izquierdo
         JPanel panelIzquierdo = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g;
-
-                // 🔧 Dibujar imagen de fondo
                 ImageIcon fondo = new ImageIcon("assets/comedor(2).jpeg");
                 g2d.drawImage(fondo.getImage(), 0, 0, getWidth(), getHeight(), this);
-
-                // 🌫️ Capa semi-transparente
                 g2d.setColor(new Color(16, 198, 90, 120));
                 g2d.fillRect(0, 0, getWidth(), getHeight());
             }
         };
         panelIzquierdo.setLayout(new GridBagLayout());
 
-        // Logo
         ImageIcon iconoOriginal = new ImageIcon("assets/logo.png");
         Image imagenOriginal = iconoOriginal.getImage();
         Image imagenEscalada = imagenOriginal.getScaledInstance(250, 250, Image.SCALE_SMOOTH);
@@ -55,19 +52,17 @@ public class RegistroVisualUser extends JFrame {
         gbc.insets = new Insets(0, 0, 30, 0);
         panelIzquierdo.add(logo, gbc);
 
-        // Nombre del sistema
         JLabel nombreSistema = new JLabel("COMEDOR ESTUDIANTIL");
         nombreSistema.setFont(new Font("Roboto Black", Font.BOLD, 34));
         nombreSistema.setForeground(Color.WHITE);
         gbc.gridy = 1;
         panelIzquierdo.add(nombreSistema, gbc);
 
-        // 👉 Panel derecho: formulario
+        // Panel derecho
         JPanel panelDerecho = new JPanel();
         panelDerecho.setBackground(new Color(39, 39, 39));
         panelDerecho.setLayout(new BorderLayout());
 
-        // Panel de título
         JPanel panelTitulo = new JPanel();
         panelTitulo.setBackground(new Color(119, 182, 201));
         panelTitulo.setPreferredSize(new Dimension(0, 90));
@@ -78,7 +73,6 @@ public class RegistroVisualUser extends JFrame {
         panelTitulo.add(title);
         panelDerecho.add(panelTitulo, BorderLayout.NORTH);
 
-        // Panel de formulario
         JPanel formularioPanel = new JPanel();
         formularioPanel.setBackground(new Color(39, 39, 39));
         formularioPanel.setLayout(new GridBagLayout());
@@ -93,8 +87,9 @@ public class RegistroVisualUser extends JFrame {
         gbcForm.anchor = GridBagConstraints.WEST;
         gbcForm.insets = new Insets(10, 40, 5, 40);
 
-        // Campos del formulario (los mismos que antes)
-        Dimension campoDimension = new Dimension(500, 30); // Tamaño fijo para todos
+        // Campos del formulario con bordes redondeados
+        Dimension campoDimension = new Dimension(500, 30);
+        int borderRadius = 15;
 
         // NOMBRE Y APELLIDO
         JLabel usuarioLabel = new JLabel("NOMBRE Y APELLIDO:");
@@ -103,14 +98,14 @@ public class RegistroVisualUser extends JFrame {
         gbcForm.gridy++;
         formularioPanel.add(usuarioLabel, gbcForm);
 
-        usuarioField = new JTextField();
+        usuarioField = new RoundedTextField(40, borderRadius, borderRadius);
         usuarioField.setBackground(new Color(96, 96, 96));
         usuarioField.setForeground(Color.WHITE);
-        usuarioField.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        usuarioField.setBorder(BorderFactory.createCompoundBorder(
+                usuarioField.getBorder(),
+                BorderFactory.createEmptyBorder(5, 15, 5, 15)));
         usuarioField.setPreferredSize(campoDimension);
         gbcForm.gridy++;
-        gbcForm.fill = GridBagConstraints.NONE;
-        gbcForm.weightx = 0.0;
         formularioPanel.add(usuarioField, gbcForm);
 
         // CÉDULA
@@ -120,10 +115,12 @@ public class RegistroVisualUser extends JFrame {
         gbcForm.gridy++;
         formularioPanel.add(cedulaLabel, gbcForm);
 
-        cedulaField = new JTextField();
+        cedulaField = new RoundedTextField(40, borderRadius, borderRadius);
         cedulaField.setBackground(new Color(96, 96, 96));
         cedulaField.setForeground(Color.WHITE);
-        cedulaField.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        cedulaField.setBorder(BorderFactory.createCompoundBorder(
+                cedulaField.getBorder(),
+                BorderFactory.createEmptyBorder(5, 15, 5, 15)));
         cedulaField.setPreferredSize(campoDimension);
         gbcForm.gridy++;
         formularioPanel.add(cedulaField, gbcForm);
@@ -135,10 +132,12 @@ public class RegistroVisualUser extends JFrame {
         gbcForm.gridy++;
         formularioPanel.add(emailLabel, gbcForm);
 
-        emailField = new JTextField();
+        emailField = new RoundedTextField(40, borderRadius, borderRadius);
         emailField.setBackground(new Color(96, 96, 96));
         emailField.setForeground(Color.WHITE);
-        emailField.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        emailField.setBorder(BorderFactory.createCompoundBorder(
+                emailField.getBorder(),
+                BorderFactory.createEmptyBorder(5, 15, 5, 15)));
         emailField.setPreferredSize(campoDimension);
         gbcForm.gridy++;
         formularioPanel.add(emailField, gbcForm);
@@ -150,10 +149,12 @@ public class RegistroVisualUser extends JFrame {
         gbcForm.gridy++;
         formularioPanel.add(passLabel, gbcForm);
 
-        passField = new JPasswordField();
+        passField = new RoundedPasswordField(40, borderRadius, borderRadius);
         passField.setBackground(new Color(96, 96, 96));
         passField.setForeground(Color.WHITE);
-        passField.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        passField.setBorder(BorderFactory.createCompoundBorder(
+                passField.getBorder(),
+                BorderFactory.createEmptyBorder(5, 15, 5, 15)));
         passField.setPreferredSize(campoDimension);
         gbcForm.gridy++;
         formularioPanel.add(passField, gbcForm);
@@ -165,23 +166,46 @@ public class RegistroVisualUser extends JFrame {
         gbcForm.gridy++;
         formularioPanel.add(confirmPassLabel, gbcForm);
 
-        confirmPassField = new JPasswordField();
+        confirmPassField = new RoundedPasswordField(40, borderRadius, borderRadius);
         confirmPassField.setBackground(new Color(96, 96, 96));
         confirmPassField.setForeground(Color.WHITE);
-        confirmPassField.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        confirmPassField.setBorder(BorderFactory.createCompoundBorder(
+                confirmPassField.getBorder(),
+                BorderFactory.createEmptyBorder(5, 15, 5, 15)));
         confirmPassField.setPreferredSize(campoDimension);
         gbcForm.gridy++;
         formularioPanel.add(confirmPassField, gbcForm);
 
-        // Panel de botones (sin cambios)
+        // Panel de botones
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         buttonPanel.setBackground(new Color(39, 39, 39));
         gbcForm.gridy++;
         gbcForm.fill = GridBagConstraints.HORIZONTAL;
         formularioPanel.add(buttonPanel, gbcForm);
 
-        // Botón de registro
-        entrarButton = new JButton("Registrarse");
+        // Botón de registro con bordes redondeados
+        entrarButton = new JButton("Registrarse") {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(getBackground());
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
+                super.paintComponent(g2);
+                g2.dispose();
+            }
+
+            @Override
+            protected void paintBorder(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(getForeground());
+                g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
+                g2.dispose();
+            }
+        };
+        entrarButton.setContentAreaFilled(false);
+        entrarButton.setOpaque(false);
         entrarButton.setPreferredSize(new Dimension(200, 45));
         entrarButton.setBackground(new Color(70, 130, 180));
         entrarButton.setForeground(Color.WHITE);
@@ -194,6 +218,31 @@ public class RegistroVisualUser extends JFrame {
                         "<span style='color:#4FC3F7;'><u>aquí</u></span></html>");
         cuentaLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         cuentaLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // Añadir MouseListener para redirigir a LoginVisual
+        cuentaLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                // Crear y mostrar la ventana de login
+                LoginVisual loginV = new LoginVisual();
+                loginV.setVisible(true);
+                // Cerrar la ventana actual
+                dispose();
+            }
+
+            // Opcional: Cambiar color al pasar el mouse
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                cuentaLabel.setText(
+                        "<html><span style='color:#CCCCCC;'>¿Ya tienes una cuenta? Haz click </span>" +
+                                "<span style='color:#64B5F6;'><u>aquí</u></span></html>");
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                cuentaLabel.setText(
+                        "<html><span style='color:#CCCCCC;'>¿Ya tienes una cuenta? Haz click </span>" +
+                                "<span style='color:#4FC3F7;'><u>aquí</u></span></html>");
+            }
+        });
+
         buttonPanel.add(cuentaLabel);
 
         // Agregar los paneles principales
@@ -202,18 +251,17 @@ public class RegistroVisualUser extends JFrame {
         splitPane.setDividerSize(0);
         add(splitPane, BorderLayout.CENTER);
 
-        // Mismo ActionListener sin cambios
+        // ActionListener (sin cambios)
         entrarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Obtener los valores de los campos
                 String nombreApellido = usuarioField.getText().trim();
                 String cedula = cedulaField.getText().trim();
                 String email = emailField.getText().trim();
                 String contrasenia = new String(passField.getPassword());
                 String confirmacion = new String(confirmPassField.getPassword());
 
-                // Validar nombre y apellido (mínimo 24 caracteres, solo letras y espacios)
+                // Validación nombre y apellido
                 if (nombreApellido.length() < 12) {
                     JOptionPane.showMessageDialog(RegistroVisualUser.this,
                             "El nombre y apellido deben tener al menos 12 caracteres.",
@@ -228,7 +276,7 @@ public class RegistroVisualUser extends JFrame {
                     return;
                 }
 
-                // Validar cédula (solo números)
+                // Validación cédula
                 if (!Pattern.matches("^\\d+$", cedula)) {
                     JOptionPane.showMessageDialog(RegistroVisualUser.this,
                             "La cédula solo debe contener números.",
@@ -236,7 +284,7 @@ public class RegistroVisualUser extends JFrame {
                     return;
                 }
 
-                // Validar email (debe ser valido)
+                // Validación email
                 if (!Pattern.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$", email)) {
                     JOptionPane.showMessageDialog(RegistroVisualUser.this,
                             "Por favor ingrese un correo electrónico válido.",
@@ -244,36 +292,22 @@ public class RegistroVisualUser extends JFrame {
                     return;
                 }
 
-                // Validar contraseña (al menos una mayuscula, un numero y un caracter especial)
-                if (contrasenia.length() < 8) {
+                // Validación combinada de contraseña
+                if (!(contrasenia.length() >= 8 &&
+                        Pattern.matches(".*[A-Z].*", contrasenia) &&
+                        Pattern.matches(".*\\d.*", contrasenia) &&
+                        Pattern.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*", contrasenia))) {
                     JOptionPane.showMessageDialog(RegistroVisualUser.this,
-                            "La contraseña debe tener al menos 8 caracteres.",
+                            "<html>La contraseña debe cumplir con:<br>" +
+                                    "- Mínimo 8 caracteres<br>" +
+                                    "- Al menos una mayúscula<br>" +
+                                    "- Al menos un número<br>" +
+                                    "- Al menos un caracter especial</html>",
                             "Error de validación", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
-                if (!Pattern.matches(".*[A-Z].*", contrasenia)) {
-                    JOptionPane.showMessageDialog(RegistroVisualUser.this,
-                            "La contraseña debe contener al menos una mayúscula.",
-                            "Error de validación", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                if (!Pattern.matches(".*\\d.*", contrasenia)) {
-                    JOptionPane.showMessageDialog(RegistroVisualUser.this,
-                            "La contraseña debe contener al menos un número.",
-                            "Error de validación", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                if (!Pattern.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*", contrasenia)) {
-                    JOptionPane.showMessageDialog(RegistroVisualUser.this,
-                            "La contraseña debe contener al menos un caracter especial.",
-                            "Error de validación", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                // Validar coincidencia de contraseñas
+                // Validación coincidencia de contraseñas
                 if (!contrasenia.equals(confirmacion)) {
                     JOptionPane.showMessageDialog(RegistroVisualUser.this,
                             "Las contraseñas no coinciden.",
@@ -281,7 +315,7 @@ public class RegistroVisualUser extends JFrame {
                     return;
                 }
 
-                // Si todas las validaciones pasan, proceder con el registro
+                // Resto de la lógica de registro...
                 controleRegister R = new controleRegister();
                 if (!R.Validar(cedula)) {
                     R.RegistrarUser(cedula, nombreApellido, email, contrasenia);
