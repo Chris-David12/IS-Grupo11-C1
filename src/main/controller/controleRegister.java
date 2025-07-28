@@ -74,4 +74,36 @@ public class controleRegister {
             System.out.println("An error occurred: " + e.getMessage());
         }
     }
+
+    public Boolean Verificar(String ci, String name) {
+
+        Boolean Flag = false;
+        try{
+            File BaseDT = new File("dataBaseUniversal.txt");
+            Scanner myReader = new Scanner(BaseDT);
+
+
+            while (myReader.hasNextLine()){
+
+                String data1 = myReader.nextLine();
+                String data2 = myReader.nextLine();
+          
+                if (data1.equals(ci) && data2.equals(name)){
+                    System.out.println(ci);
+                    System.out.println(name);
+
+                    Flag = true;
+                    break;
+                }
+                
+            }
+
+            myReader.close();
+
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        return Flag;
+    }
 }
