@@ -7,16 +7,19 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class controlerInicioUser {
-    private static final String FILE_PATH = "Instancia.txt";
     public String usuario = "";
     public String cedula = "";
     public String correo = "";
     public String password = "";
     public String rol = "";
     public Float saldo = null;
+    private static final String FILE_PATH = "Instancia.txt";
 
     public controlerInicioUser() {
+        cargarDatosUsuario();
+    }
 
+    private void cargarDatosUsuario() {
         try {
             File BaseDT = new File(FILE_PATH);
             Scanner myReader = new Scanner(BaseDT);
@@ -33,11 +36,12 @@ public class controlerInicioUser {
             myReader.close();
 
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
+            System.out.println("An error occurred while reading user data.");
             e.printStackTrace();
         }
     }
 
+    // Método para limpiar el archivo al cerrar sesión
     public static void limpiarArchivoSesion() {
         try {
             FileWriter writer = new FileWriter(FILE_PATH);
