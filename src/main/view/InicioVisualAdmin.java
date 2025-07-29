@@ -139,10 +139,10 @@ public class InicioVisualAdmin extends JFrame {
         carta1.setBackground(new Color(48, 43, 47));
         carta1.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
         carta1.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(21, 174, 92), 2),
-            new EmptyBorder(10, 15, 10, 15)
-        ));
-        JLabel textoCarta1 = new JLabel("<html><body style='width:1000px'>Los costos fijos incluyen alquiler, salarios fijos, y servicios básicos que no varían con la producción.</body></html>");
+                BorderFactory.createLineBorder(new Color(21, 174, 92), 2),
+                new EmptyBorder(10, 15, 10, 15)));
+        JLabel textoCarta1 = new JLabel(
+                "<html><body style='width:1000px'>Los costos fijos incluyen alquiler, salarios fijos, y servicios básicos que no varían con la producción.</body></html>");
         textoCarta1.setFont(new Font("Roboto", Font.PLAIN, 18));
         textoCarta1.setForeground(Color.WHITE);
         carta1.add(textoCarta1, BorderLayout.CENTER);
@@ -164,10 +164,10 @@ public class InicioVisualAdmin extends JFrame {
         carta2.setBackground(new Color(48, 43, 47));
         carta2.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
         carta2.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(21, 174, 92), 2),
-            new EmptyBorder(10, 15, 10, 15)
-        ));
-        JLabel textoCarta2 = new JLabel("<html><body style='width:1000px'>Los costos variables son aquellos que cambian según el nivel de producción, como insumos y energía.</body></html>");
+                BorderFactory.createLineBorder(new Color(21, 174, 92), 2),
+                new EmptyBorder(10, 15, 10, 15)));
+        JLabel textoCarta2 = new JLabel(
+                "<html><body style='width:1000px'>Los costos variables son aquellos que cambian según el nivel de producción, como insumos y energía.</body></html>");
         textoCarta2.setFont(new Font("Roboto", Font.PLAIN, 18));
         textoCarta2.setForeground(Color.WHITE);
         carta2.add(textoCarta2, BorderLayout.CENTER);
@@ -181,12 +181,17 @@ public class InicioVisualAdmin extends JFrame {
 
         botonLogin.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
+                // Limpiar el archivo de sesión antes de cerrar
+                controlerInicioUser.limpiarArchivoSesion();
+
+                // Abrir la ventana de login
                 LoginVisual loginV = new LoginVisual();
                 loginV.setVisible(true);
+
+                // Cerrar la ventana actual
                 dispose();
             }
-
         });
     }
 

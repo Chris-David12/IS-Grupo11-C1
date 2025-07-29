@@ -15,7 +15,7 @@ public class controlerLogin {
         Boolean Flag = false;
         Integer UserID = 1;
         try {
-            File BaseDT = new File("output.txt");
+            File BaseDT = new File("dataBase.txt");
             Scanner myReader = new Scanner(BaseDT);
             String data1 = myReader.nextLine();
 

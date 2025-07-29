@@ -139,12 +139,17 @@ public class InicioVisual extends JFrame {
 
         botonLogin.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
+                // Limpiar el archivo de sesión antes de cerrar
+                controlerInicioUser.limpiarArchivoSesion();
+
+                // Abrir la ventana de login
                 LoginVisual loginV = new LoginVisual();
                 loginV.setVisible(true);
+
+                // Cerrar la ventana actual
                 dispose();
             }
-
         });
 
         // Panel contenedor general
