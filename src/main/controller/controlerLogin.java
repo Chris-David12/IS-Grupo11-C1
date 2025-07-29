@@ -15,7 +15,7 @@ public class controlerLogin {
         Boolean Flag = false;
         Integer UserID = 1;
         try {
-            File BaseDT = new File("output.txt");
+            File BaseDT = new File("dataBase.txt");
             Scanner myReader = new Scanner(BaseDT);
             String data1 = myReader.nextLine();
 
@@ -98,8 +98,8 @@ public class controlerLogin {
         }
     }
 
-    public String detectarRol() {
-        String rol = null;
+    public Boolean detectarRol() {
+        Boolean rol = false;
 
         try {
             File instanciaFile = new File("Instancia.txt");
@@ -112,8 +112,8 @@ public class controlerLogin {
             while (scanner.hasNextLine()) {
                 String linea = scanner.nextLine().trim();
 
-                if (linea.equals("Comensal") || linea.equals("Admin")) {
-                    rol = linea.trim();
+                if (linea.equals("Admin")) {
+                    rol = true;
                     break;
                 }
             }

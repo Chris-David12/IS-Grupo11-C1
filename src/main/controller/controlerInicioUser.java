@@ -24,7 +24,7 @@ public class controlerInicioUser {
             usuario = myReader.nextLine().trim();
             correo = myReader.nextLine().trim();
             password = myReader.nextLine().trim();
-            if (rol.equals("Comensal")){
+            if (!rol.equals("Admin")){
                 saldo = Float.parseFloat(myReader.nextLine().trim());
             }
 

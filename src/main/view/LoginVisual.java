@@ -234,9 +234,9 @@ public class LoginVisual extends JFrame {
                 controlerLogin controlador = new controlerLogin();
                 if (controlador.Validar(cedula, contrasenia)) {
 
-                    String rolview = null;
+                    Boolean rolview = null;
                     rolview = controlador.detectarRol();
-                    if (rolview.equals("Comensal")) {
+                    if (!rolview) {
                         InicioVisual inicioV = new InicioVisual();
                         inicioV.setVisible(true);
                         dispose();

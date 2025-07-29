@@ -98,13 +98,21 @@ public class InicioVisual extends JFrame {
 
         controlerInicioUser cLU = new controlerInicioUser();
 
-        JLabel nombre = new JLabel("Saldo: " + String.valueOf(cLU.saldo) + " Bs");
+        JLabel nombre = new JLabel(cLU.usuario);
         nombre.setFont(new Font("Roboto", Font.BOLD, 18));
         nombre.setBackground(new Color(21, 174, 92));
         nombre.setForeground(Color.WHITE);
         nombre.setMaximumSize(new Dimension(200, 40));
         nombre.setPreferredSize(new Dimension(200, 40));
         nombre.setMinimumSize(new Dimension(200, 40));
+
+        JLabel saldo = new JLabel("Saldo: " + String.valueOf(cLU.saldo) + " Bs");
+        saldo.setFont(new Font("Roboto", Font.BOLD, 18));
+        saldo.setBackground(new Color(21, 174, 92));
+        saldo.setForeground(Color.WHITE);
+        saldo.setMaximumSize(new Dimension(200, 40));
+        saldo.setPreferredSize(new Dimension(200, 40));
+        saldo.setMinimumSize(new Dimension(200, 40));
 
         JButton botonLogin = new JButton("CERRAR SESIÓN");
         botonLogin.setFont(new Font("Roboto", Font.BOLD, 18));
@@ -117,6 +125,7 @@ public class InicioVisual extends JFrame {
         botonLogin.setMinimumSize(new Dimension(200, 40));
 
         panelBotones.add(nombre);
+        panelBotones.add(saldo);
         panelBotones.add(Box.createRigidArea(new Dimension(0, 10))); // separación vertical
         panelBotones.add(botonLogin);
 

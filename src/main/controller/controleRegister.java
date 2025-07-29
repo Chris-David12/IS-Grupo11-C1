@@ -8,10 +8,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class controleRegister {
-    public controleRegister() {
-    }
-
+    
     Integer UserID = 1;
+    String rol = null;
+    
+    public controleRegister() {}
 
     public Boolean Validar(String data) {
 
@@ -52,7 +53,7 @@ public class controleRegister {
             File BaseDT = new File("dataBase.txt");
             FileWriter myWriter = new FileWriter(BaseDT, true);
 
-            myWriter.write(UserID + "\n" + Cedula + "\n" + "Comensal" + "\n" + name + "\n" + email + "\n" + password
+            myWriter.write(UserID + "\n" + Cedula + "\n" + rol + "\n" + name + "\n" + email + "\n" + password
                     + "\n" + "0.00" + "\n");
 
             myWriter.close();
@@ -87,10 +88,10 @@ public class controleRegister {
 
                 String data1 = myReader.nextLine();
                 String data2 = myReader.nextLine();
+                String data3 = myReader.nextLine();
           
                 if (data1.equals(ci) && data2.equals(name)){
-                    System.out.println(ci);
-                    System.out.println(name);
+                    rol = data3;
 
                     Flag = true;
                     break;
