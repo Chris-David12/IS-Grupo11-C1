@@ -284,10 +284,22 @@ public class RegistroVisualAdmin extends JFrame {
 
                 controleRegister R = new controleRegister();
                 if (!R.Validar(cedula)) {
-                    R.RegistrarAdmin(cedula, nombreApellido, email, contrasenia);
-                    JOptionPane.showMessageDialog(RegistroVisualAdmin.this,
+                    if (R.Verificar(cedula,nombreApellido)) {
+
+                        R.RegistrarUser(cedula, nombreApellido, email, contrasenia);
+                        JOptionPane.showMessageDialog(RegistroVisualAdmin.this,
                             "Registro exitoso. Bienvenido " + nombreApellido,
                             "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+                            LoginVisual loginV = new LoginVisual();
+                            loginV.setVisible(true);
+                            dispose();
+                    }else{
+                        JOptionPane.showMessageDialog(RegistroVisualAdmin.this,
+                            "El usuario no pertenece a la comunidad universitaria.",
+                            "Error de verificación", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
                 } else {
                     JOptionPane.showMessageDialog(RegistroVisualAdmin.this,
                             "El usuario ya existe.",

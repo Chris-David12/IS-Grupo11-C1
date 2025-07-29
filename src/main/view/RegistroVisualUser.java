@@ -318,14 +318,24 @@ public class RegistroVisualUser extends JFrame {
                 // Resto de la lógica de registro...
                 controleRegister R = new controleRegister();
                 if (!R.Validar(cedula)) {
-                    R.RegistrarUser(cedula, nombreApellido, email, contrasenia);
-                    JOptionPane.showMessageDialog(RegistroVisualUser.this,
+
+                    if (R.Verificar(cedula,nombreApellido)) {
+
+                        R.RegistrarUser(cedula, nombreApellido, email, contrasenia);
+                        JOptionPane.showMessageDialog(RegistroVisualUser.this,
                             "Registro exitoso. Bienvenido " + nombreApellido,
                             "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
-                    LoginVisual loginV = new LoginVisual();
-                    loginV.setVisible(true);
-                    dispose();
+                            LoginVisual loginV = new LoginVisual();
+                            loginV.setVisible(true);
+                            dispose();
+                    }else{
+                        JOptionPane.showMessageDialog(RegistroVisualUser.this,
+                            "El usuario no pertenece a la comunidad universitaria.",
+                            "Error de verificación", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    
                 } else {
                     JOptionPane.showMessageDialog(RegistroVisualUser.this,
                             "El usuario ya existe.",
