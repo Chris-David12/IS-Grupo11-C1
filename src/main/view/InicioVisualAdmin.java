@@ -124,75 +124,170 @@ public class InicioVisualAdmin extends JFrame {
 
         panelSuperior.add(panelBotones, BorderLayout.EAST);
 
-        // SUBTiTULO 1 - Costos Fijos
-        JPanel panelSubtitulo1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        panelSubtitulo1.setBackground(new Color(39, 39, 39));
-        panelSubtitulo1.setPreferredSize(new Dimension(1280, 250));
-        JLabel subtitulo1 = new JLabel("Costos Fijos");
-        subtitulo1.setFont(new Font("Roboto Black", Font.BOLD, 32));
-        subtitulo1.setForeground(Color.WHITE);
-        subtitulo1.setBorder(new EmptyBorder(0, 50, 0, 0));
-        panelSubtitulo1.add(subtitulo1);
+        // Panel para el subtítulo alineado a la izquierda
+        JPanel panelSubtitulo = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panelSubtitulo.setBackground(new Color(39, 39, 39));
+        panelSubtitulo.setPreferredSize(new Dimension(1280, 50));
 
-        // Tarjeta Costos Fijos
-        JPanel carta1 = new JPanel(new BorderLayout());
-        carta1.setBackground(new Color(48, 43, 47));
-        carta1.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
-        carta1.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(21, 174, 92), 2),
-                new EmptyBorder(10, 15, 10, 15)));
-        JLabel textoCarta1 = new JLabel(
-                "<html><body style='width:1000px'>Los costos fijos incluyen alquiler, salarios fijos, y servicios básicos que no varían con la producción.</body></html>");
-        textoCarta1.setFont(new Font("Roboto", Font.PLAIN, 18));
-        textoCarta1.setForeground(Color.WHITE);
-        carta1.add(textoCarta1, BorderLayout.CENTER);
+        JLabel subtitulo = new JLabel("Gestor de  Menús");
+        subtitulo.setFont(new Font("Roboto Black", Font.BOLD, 32));
+        subtitulo.setForeground(Color.WHITE);
+        subtitulo.setBorder(new EmptyBorder(0, 50, 0, 0));
+        panelSubtitulo.add(subtitulo);
 
-        panelSubtitulo1.add(carta1);
-
-        // SUBTiTULO 2 - Costos Variables
-        JPanel panelSubtitulo2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        panelSubtitulo2.setBackground(new Color(39, 39, 39));
-        panelSubtitulo2.setPreferredSize(new Dimension(1280, 250));
-        JLabel subtitulo2 = new JLabel("Costos Variables");
-        subtitulo2.setFont(new Font("Roboto Black", Font.BOLD, 32));
-        subtitulo2.setForeground(Color.WHITE);
-        subtitulo2.setBorder(new EmptyBorder(0, 50, 0, 0));
-        panelSubtitulo2.add(subtitulo2);
-
-        // Tarjeta Costos Variables
-        JPanel carta2 = new JPanel(new BorderLayout());
-        carta2.setBackground(new Color(48, 43, 47));
-        carta2.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
-        carta2.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(21, 174, 92), 2),
-                new EmptyBorder(10, 15, 10, 15)));
-        JLabel textoCarta2 = new JLabel(
-                "<html><body style='width:1000px'>Los costos variables son aquellos que cambian según el nivel de producción, como insumos y energía.</body></html>");
-        textoCarta2.setFont(new Font("Roboto", Font.PLAIN, 18));
-        textoCarta2.setForeground(Color.WHITE);
-        carta2.add(textoCarta2, BorderLayout.CENTER);
-
-        panelSubtitulo2.add(carta2);
-
-        // Agregamos todo al contenedor principal
+        // Agrega el panel del subtítulo debajo del panel superior
         add(contenedorSuperior);
-        add(panelSubtitulo1);
-        add(panelSubtitulo2);
+        add(panelSubtitulo);
 
         botonLogin.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                // Limpiar el archivo de sesión antes de cerrar
-                controlerInicioUser.limpiarArchivoSesion();
-
-                // Abrir la ventana de login
+            public void actionPerformed(ActionEvent e){
                 LoginVisual loginV = new LoginVisual();
                 loginV.setVisible(true);
-
-                // Cerrar la ventana actual
                 dispose();
             }
+
         });
+
+        // Panel contenedor general para las cartas
+        JPanel panelCartasContenedor = new JPanel(new BorderLayout());
+        panelCartasContenedor.setBackground(new Color(39, 39, 39));
+        panelCartasContenedor.setBorder(new EmptyBorder(20, 50, 20, 50));
+
+        // Panel interno con layout de tipo grid
+        JPanel panelCartas = new JPanel();
+        panelCartas.setLayout(new GridLayout(0, 4, 20, 20));
+        panelCartas.setOpaque(false);
+
+        // 🔹 Tarjetas tipo miniatura
+        for (int i = 1; i <= 6; i++) {
+            JPanel tarjeta = new JPanel();
+            tarjeta.setLayout(new BoxLayout(tarjeta, BoxLayout.Y_AXIS));
+            tarjeta.setBackground(new Color(48, 43, 47));
+            tarjeta.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(new Color(21, 174, 92), 2),
+                    new EmptyBorder(10, 10, 10, 10)));
+
+            // Imagen miniatura centrada
+            JLabel miniatura = new JLabel(new ImageIcon("../assets/menu" + i + ".png"));
+            miniatura.setAlignmentX(Component.CENTER_ALIGNMENT);
+            tarjeta.add(miniatura);
+            tarjeta.add(Box.createVerticalStrut(10));
+
+            // Título alineado a la izquierda
+            JLabel titulo = new JLabel("Aqui va si es desayuno o almuerzo");
+            titulo.setFont(new Font("Roboto", Font.BOLD, 18));
+            titulo.setForeground(Color.WHITE);
+            titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+            tarjeta.add(titulo);
+
+            // Fecha alineada a la izquierda
+            JLabel fecha = new JLabel("Fecha: ");
+            fecha.setFont(new Font("Roboto", Font.PLAIN, 14));
+            fecha.setForeground(Color.LIGHT_GRAY);
+            fecha.setAlignmentX(Component.CENTER_ALIGNMENT);
+            tarjeta.add(fecha);
+
+            // Horario alineado a la izquierda
+            JLabel horario = new JLabel("Horario:");
+            horario.setFont(new Font("Roboto", Font.PLAIN, 14));
+            horario.setForeground(Color.LIGHT_GRAY);
+            horario.setAlignmentX(Component.CENTER_ALIGNMENT);
+            tarjeta.add(horario);
+
+            // Descripción alineada a la izquierda
+            JLabel descripcion = new JLabel("Se ofrece:");
+            descripcion.setFont(new Font("Roboto", Font.PLAIN, 14));
+            descripcion.setForeground(Color.LIGHT_GRAY);
+            descripcion.setAlignmentX(Component.CENTER_ALIGNMENT);
+            tarjeta.add(descripcion);
+
+            // Cantidad de usuarios alineado a la izquierda
+            JLabel CantidadDeUsuarios = new JLabel("Cantidad de usuarios:");
+            CantidadDeUsuarios.setFont(new Font("Roboto", Font.PLAIN, 14));
+            CantidadDeUsuarios.setForeground(Color.LIGHT_GRAY);
+            CantidadDeUsuarios.setAlignmentX(Component.CENTER_ALIGNMENT);
+            tarjeta.add(CantidadDeUsuarios);
+
+            // Empuja los botones hacia abajo
+            tarjeta.add(Box.createVerticalGlue());
+
+            // Panel de botones centrado (como estaba)
+            JPanel panelBotonesTarjeta = new JPanel();
+            panelBotonesTarjeta.setLayout(new BoxLayout(panelBotonesTarjeta, BoxLayout.X_AXIS));
+            panelBotonesTarjeta.setOpaque(false);
+
+            JButton btnEditar = new JButton("Editar");
+            btnEditar.setFont(new Font("Roboto", Font.PLAIN, 14));
+            btnEditar.setBackground(new Color(21, 174, 92));
+            btnEditar.setForeground(Color.WHITE);
+            btnEditar.setFocusPainted(false);
+
+            JButton btnEliminar = new JButton("Eliminar");
+            btnEliminar.setFont(new Font("Roboto", Font.PLAIN, 14));
+            btnEliminar.setBackground(new Color(174, 21, 21));
+            btnEliminar.setForeground(Color.WHITE);
+            btnEliminar.setFocusPainted(false);
+
+            panelBotonesTarjeta.add(Box.createHorizontalGlue());
+            panelBotonesTarjeta.add(btnEditar);
+            panelBotonesTarjeta.add(Box.createHorizontalStrut(15)); // Separación entre botones
+            panelBotonesTarjeta.add(btnEliminar);
+            panelBotonesTarjeta.add(Box.createHorizontalGlue());
+
+            tarjeta.add(Box.createVerticalStrut(10));
+            tarjeta.add(panelBotonesTarjeta);
+
+            panelCartas.add(tarjeta);
+        }
+
+        // Tarjeta para agregar nuevo menú
+        JPanel tarjetaAgregar = new JPanel();
+        tarjetaAgregar.setLayout(new BoxLayout(tarjetaAgregar, BoxLayout.Y_AXIS));
+        tarjetaAgregar.setBackground(new Color(21, 101, 192)); // Azul
+        tarjetaAgregar.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(21, 174, 92), 2),
+                new EmptyBorder(10, 10, 10, 10)));
+
+        // Icono "+" grande centrado
+        JLabel iconoMas = new JLabel("+");
+        iconoMas.setFont(new Font("Roboto", Font.BOLD, 60));
+        iconoMas.setForeground(Color.WHITE);
+        iconoMas.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Texto debajo del icono
+        JLabel textoAgregar = new JLabel("Agregar menú");
+        textoAgregar.setFont(new Font("Roboto", Font.BOLD, 18));
+        textoAgregar.setForeground(Color.WHITE);
+        textoAgregar.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        tarjetaAgregar.add(Box.createVerticalGlue());
+        tarjetaAgregar.add(iconoMas);
+        tarjetaAgregar.add(Box.createVerticalStrut(10));
+        tarjetaAgregar.add(textoAgregar);
+        tarjetaAgregar.add(Box.createVerticalGlue());
+
+        // Opcional: Cambia el cursor al pasar el mouse
+        tarjetaAgregar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // Opcional: Añade un MouseListener para manejar el click
+        tarjetaAgregar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                // Aquí puedes abrir el formulario para agregar un nuevo menú
+                JOptionPane.showMessageDialog(null, "Agregar nuevo menú");
+            }
+        });
+
+        panelCartas.add(tarjetaAgregar);
+
+        panelCartasContenedor.add(panelCartas, BorderLayout.CENTER);
+
+        // Agrega el panel de cartas justo después del subtítulo
+        add(panelCartasContenedor);
+
+        // Elimina las líneas:
+        // add(panelSubtitulo, BorderLayout.CENTER);
+        // add(panelCartasContenedor, BorderLayout.SOUTH);
     }
 
     public static void main(String[] args) {
