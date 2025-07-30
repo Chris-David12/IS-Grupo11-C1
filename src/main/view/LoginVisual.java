@@ -1,275 +1,195 @@
+
 import javax.swing.*;
-
-import main.controller.controlerLogin;
-import main.model.RoundedPasswordField;
-import main.model.RoundedTextField;
-
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.lang.ModuleLayer.Controller;
+import java.awt.event.*;
 import java.util.regex.Pattern;
+import main.controller.controlerLogin;
+import main.model.AuthPanel;
+import main.model.RoundedButton;
+import main.model.RoundedTextField;
+import main.model.RoundedPasswordField;
 
 public class LoginVisual extends JFrame {
-
-    // Mantener las mismas variables de instancia para los campos
-    private JTextField usuarioField;
-    private JPasswordField passField;
-    private RoundedTextField rounded;
-    private RoundedPasswordField passRounded;
-    private JButton entrarButton;
+    private AuthPanel authPanel;
 
     public LoginVisual() {
         setTitle("Comedor Estudiantil");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setMinimumSize(new Dimension(1024, 768));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Panel izquierdo
-        JPanel panelIzquierdo = new JPanel() {
+        // Panel izquierdo con imagen
+        add(createLeftPanel(), BorderLayout.WEST);
+
+        // Panel derecho con formulario
+        add(createRightPanel(), BorderLayout.CENTER);
+
+        setVisible(true);
+    }
+
+    private JPanel createLeftPanel() {
+        JPanel panel = new JPanel(new GridBagLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g;
-                ImageIcon fondo = new ImageIcon("../assets/comedor(1).jpeg");
+                ImageIcon fondo = new ImageIcon("assets/comedor(1).jpeg");
                 g2d.drawImage(fondo.getImage(), 0, 0, getWidth(), getHeight(), this);
                 g2d.setColor(new Color(16, 198, 90, 120));
                 g2d.fillRect(0, 0, getWidth(), getHeight());
             }
         };
-        panelIzquierdo.setLayout(new GridBagLayout());
 
-        ImageIcon iconoOriginal = new ImageIcon("../assets/logo.png");
-        Image imagenOriginal = iconoOriginal.getImage();
-        Image imagenEscalada = imagenOriginal.getScaledInstance(250, 250, Image.SCALE_SMOOTH);
-        ImageIcon iconoFinal = new ImageIcon(imagenEscalada);
+        // Logo y título
+        ImageIcon logo = new ImageIcon(new ImageIcon("assets/logo.png")
+                .getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH));
 
-        JLabel logo = new JLabel(iconoFinal);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.insets = new Insets(0, 0, 30, 0);
-        panelIzquierdo.add(logo, gbc);
+        panel.add(new JLabel(logo), gbc);
 
-        JLabel nombreSistema = new JLabel("COMEDOR ESTUDIANTIL");
-        nombreSistema.setFont(new Font("Roboto Black", Font.BOLD, 34));
-        nombreSistema.setForeground(Color.WHITE);
+        JLabel title = new JLabel("COMEDOR ESTUDIANTIL");
+        title.setFont(new Font("Roboto Black", Font.BOLD, 34));
+        title.setForeground(Color.WHITE);
         gbc.gridy = 1;
-        panelIzquierdo.add(nombreSistema, gbc);
+        panel.add(title, gbc);
 
-        // Panel derecho: solo login
-        JPanel panelDerecho = new JPanel();
-        panelDerecho.setBackground(new Color(39, 39, 39));
-        panelDerecho.setLayout(new BorderLayout());
+        return panel;
+    }
 
-        JPanel panelTitulo = new JPanel();
-        panelTitulo.setBackground(new Color(119, 182, 201));
-        panelTitulo.setPreferredSize(new Dimension(0, 90));
+    private JPanel createRightPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBackground(new Color(39, 39, 39));
+
+        // Título
+        JPanel titlePanel = new JPanel();
+        titlePanel.setBackground(new Color(119, 182, 201));
+        titlePanel.setPreferredSize(new Dimension(0, 90));
 
         JLabel title = new JLabel("INICIAR SESIÓN");
         title.setFont(new Font("Roboto Black", Font.BOLD, 36));
         title.setForeground(Color.WHITE);
-        panelTitulo.add(title);
-        panelDerecho.add(panelTitulo, BorderLayout.NORTH);
+        titlePanel.add(title);
+        panel.add(titlePanel, BorderLayout.NORTH);
 
-        JPanel formularioPanel = new JPanel();
-        formularioPanel.setBackground(new Color(39, 39, 39));
-        formularioPanel.setLayout(new GridBagLayout());
+        // Formulario
+        authPanel = new AuthPanel();
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(10, 40, 5, 40);
 
-        JScrollPane scrollPane = new JScrollPane(formularioPanel);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        panelDerecho.add(scrollPane, BorderLayout.CENTER);
+        // Campos
+        authPanel.usuarioField = new RoundedTextField(40, 15, 15);
+        authPanel.addFormField(gbc, "CEDULA", authPanel.usuarioField);
 
-        GridBagConstraints gbcForm = new GridBagConstraints();
-        gbcForm.gridx = 0;
-        gbcForm.gridy = 0;
-        gbcForm.anchor = GridBagConstraints.WEST;
-        gbcForm.insets = new Insets(10, 40, 5, 40);
+        authPanel.passField = new RoundedPasswordField(40, 15, 15);
+        authPanel.addFormField(gbc, "CONTRASEÑA:", authPanel.passField);
 
-        // NOMBRE Y APELLIDO
-        JLabel usuarioLabel = new JLabel("CEDULA");
-        usuarioLabel.setFont(new Font("Roboto Light", Font.BOLD, 20));
-        usuarioLabel.setForeground(Color.WHITE);
-        gbcForm.gridy++;
-        formularioPanel.add(usuarioLabel, gbcForm);
-
-        usuarioField = new RoundedTextField(40, 15, 15); // 15 es el radio de redondeo
-        usuarioField.setBackground(new Color(96, 96, 96));
-        usuarioField.setForeground(Color.WHITE);
-        usuarioField.setBorder(BorderFactory.createCompoundBorder(
-                usuarioField.getBorder(),
-                BorderFactory.createEmptyBorder(5, 10, 5, 10)));
-        usuarioField.setPreferredSize(new Dimension(500, 30)); // Tamaño constante
-
-        gbcForm.gridy++;
-        gbcForm.fill = GridBagConstraints.NONE;
-        gbcForm.weightx = 0.0;
-        formularioPanel.add(usuarioField, gbcForm);
-
-        // CONTRASEÑA
-        JLabel passLabel = new JLabel("CONTRASEÑA:");
-        passLabel.setFont(new Font("Roboto Light", Font.BOLD, 20));
-        passLabel.setForeground(Color.WHITE);
-        gbcForm.gridy++;
-        formularioPanel.add(passLabel, gbcForm);
-
-        passField = new RoundedPasswordField(40, 15, 15);
-        passField.setBackground(new Color(96, 96, 96));
-        passField.setForeground(Color.WHITE);
-        passField.setBorder(BorderFactory.createCompoundBorder(
-                passField.getBorder(),
-                BorderFactory.createEmptyBorder(5, 10, 5, 10)));
-        passField.setPreferredSize(new Dimension(500, 30)); // Tamaño constante
-
-        gbcForm.gridy++;
-        gbcForm.fill = GridBagConstraints.NONE;
-        gbcForm.weightx = 0.0;
-        formularioPanel.add(passField, gbcForm);
-
-        // Panel de botones
+        // Botones
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         buttonPanel.setBackground(new Color(39, 39, 39));
-        gbcForm.gridy++;
-        gbcForm.fill = GridBagConstraints.HORIZONTAL;
-        formularioPanel.add(buttonPanel, gbcForm);
+        gbc.gridy++;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        authPanel.add(buttonPanel, gbc);
 
-        // Botón de entrar
-        entrarButton = new JButton("Entrar") {
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        RoundedButton loginButton = (RoundedButton) authPanel.createRoundedButton("Entrar");
+        buttonPanel.add(loginButton);
 
-                g2.setColor(getBackground());
-                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
+        // Enlace a registro
+        JLabel registerLink = createRegisterLink();
+        buttonPanel.add(registerLink);
 
-                super.paintComponent(g2);
-                g2.dispose();
-            }
+        JScrollPane scrollPane = new JScrollPane(authPanel);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        panel.add(scrollPane, BorderLayout.CENTER);
 
-            @Override
-            protected void paintBorder(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        // Listeners
+        setupListeners(loginButton);
 
-                g2.setColor(getForeground());
-                g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
-                g2.dispose();
-            }
-        };
-        entrarButton.setContentAreaFilled(false);
-        entrarButton.setOpaque(false);
-        entrarButton.setPreferredSize(new Dimension(200, 45));
-        entrarButton.setBackground(new Color(70, 130, 180));
-        entrarButton.setForeground(Color.WHITE);
-        entrarButton.setFont(new Font("Arial", Font.BOLD, 20));
-        buttonPanel.add(entrarButton);
+        return panel;
+    }
 
-        // Texto "ya tienes cuenta"
-        JLabel cuentaLabel = new JLabel(
-                "<html><span style='color:#CCCCCC;'>¿No tienes una cuenta? </span>" +
+    private JLabel createRegisterLink() {
+        JLabel link = new JLabel(
+                "<html><span style='color:#CCCCCC;'>¿No tienes cuenta? </span>" +
                         "<span style='color:#4FC3F7;'><u>Registrate</u></span></html>");
-        cuentaLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        cuentaLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        link.setFont(new Font("Arial", Font.PLAIN, 14));
+        link.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        // Añadir MouseListener para redirigir a RegistroVisualUser
-        cuentaLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                // Crear y mostrar la ventana de registro
-                RegistroVisualUser registroV = new RegistroVisualUser();
-                registroV.setVisible(true);
-                // Cerrar la ventana actual
+        link.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                new RegistroVisualUser().setVisible(true);
                 dispose();
             }
 
-            // Cambiar color al pasar el mouse para mejor feedback visual
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                cuentaLabel.setText(
-                        "<html><span style='color:#CCCCCC;'>¿No tienes una cuenta? </span>" +
+            public void mouseEntered(MouseEvent evt) {
+                link.setText(
+                        "<html><span style='color:#CCCCCC;'>¿No tienes cuenta? </span>" +
                                 "<span style='color:#64B5F6;'><u>Registrate</u></span></html>");
             }
 
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                cuentaLabel.setText(
-                        "<html><span style='color:#CCCCCC;'>¿No tienes una cuenta? </span>" +
+            public void mouseExited(MouseEvent evt) {
+                link.setText(
+                        "<html><span style='color:#CCCCCC;'>¿No tienes cuenta? </span>" +
                                 "<span style='color:#4FC3F7;'><u>Registrate</u></span></html>");
             }
         });
 
-        buttonPanel.add(cuentaLabel);
+        return link;
+    }
 
-        // Agregar los paneles principales
-        // Cambiado el orden: primero panelDerecho login, luego panelIzquierdo
-        // imagen/logo
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelDerecho, panelIzquierdo);
-        splitPane.setResizeWeight(0.5);
-        splitPane.setDividerSize(0);
-        add(splitPane, BorderLayout.CENTER);
-
-        // ActionListener solo para login
-        entrarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String cedula = usuarioField.getText().trim();
-                String contrasenia = new String(passField.getPassword());
-
-                // Validar que no estén vacíos
-                if (cedula.isEmpty() || contrasenia.isEmpty()) {
-                    JOptionPane.showMessageDialog(LoginVisual.this,
-                            "Por favor, complete ambos campos.",
-                            "Error de validación", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                // Validar que el usuario solo contenga números
-                if (!Pattern.matches("^\\d+$", cedula)) {
-                    JOptionPane.showMessageDialog(LoginVisual.this,
-                            "El nombre de usuario debe contener solo números (cédula).",
-                            "Error de validación", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                // Aquí iría la lógica real de autenticación
-                controlerLogin controlador = new controlerLogin();
-                if (controlador.Validar(cedula, contrasenia)) {
-
-                    Boolean rolview = null;
-                    rolview = controlador.detectarRol();
-                    if (!rolview) {
-                        InicioVisual inicioV = new InicioVisual();
-                        inicioV.setVisible(true);
-                        dispose();
-                    } else {
-                        InicioVisualAdmin inicioVA = new InicioVisualAdmin();
-                        inicioVA.setVisible(true);
-                        dispose();
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(LoginVisual.this,
-                            "Cédula y/o contraseña incorrectos.",
-                            "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-
-        // Agregar validador en tiempo real para solo permitir números
-        usuarioField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
+    private void setupListeners(JButton loginButton) {
+        // Validación de solo números en cédula
+        authPanel.usuarioField.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent evt) {
                 char c = evt.getKeyChar();
                 if (!Character.isDigit(c)) {
-                    evt.consume(); // Ignorar el caracter si no es número
-                    getToolkit().beep(); // Sonido de alerta
+                    evt.consume();
+                    Toolkit.getDefaultToolkit().beep();
                 }
             }
         });
 
-        setVisible(true);
+        // Acción de login
+        loginButton.addActionListener(e -> {
+            String cedula = authPanel.usuarioField.getText().trim();
+            String contrasenia = new String(authPanel.passField.getPassword());
+
+            if (cedula.isEmpty() || contrasenia.isEmpty()) {
+                JOptionPane.showMessageDialog(this,
+                        "Por favor, complete ambos campos.",
+                        "Error de validación", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (!Pattern.matches("^\\d+$", cedula)) {
+                JOptionPane.showMessageDialog(this,
+                        "La cédula debe contener solo números.",
+                        "Error de validación", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            controlerLogin controlador = new controlerLogin();
+            if (controlador.Validar(cedula, contrasenia)) {
+                if (controlador.detectarRol()) {
+                    new InicioVisualAdmin().setVisible(true);
+                } else {
+                    new InicioVisual().setVisible(true);
+                }
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Cédula y/o contraseña incorrectos.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new LoginVisual();
-        });
+        SwingUtilities.invokeLater(() -> new LoginVisual());
     }
 }
