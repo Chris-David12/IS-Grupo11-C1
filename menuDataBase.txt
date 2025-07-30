@@ -6,3 +6,5 @@ Almuerzo|2025-07-29|12:00-14:00|Sopa y segundo|82|120.0|60.0
 Almuerzo|2025-07-29|12:00-14:00|Sopa y segundo|82|120.0|60.0
 Almuerzo|2025-07-29|12:00-14:00|Sopa y segundo|82|120.0|60.0
 Almuerzo|2025-07-29|12:00-14:00|Sopa y segundo|82|120.0|60.0
+Almuerzo|2025-07-20|12:00-14:00|yoan te amo|100|100.0|100.0
+Desayuno|2025-07-30|07:00-09:00|asfdas|214|12.0|13.0
