@@ -1,0 +1,2 @@
+tipo|fecha|horario|descripcion|cantidadUsuarios|constante|variable
+Almuerzo|2025-07-29|12:00-14:00|Sopa y segundo|82|120.0|60.0

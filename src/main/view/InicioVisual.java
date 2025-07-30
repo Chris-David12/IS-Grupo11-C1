@@ -1,6 +1,10 @@
-
 import javax.swing.*;
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import main.controller.controlerInicioUser;
 import main.model.HeaderPanel;
 import main.model.MenuCard;
@@ -22,8 +26,8 @@ public class InicioVisual extends JFrame {
         // Menú title
         add(createMenuTitle());
 
-        // Menu cards
-        add(createMenuCards());
+        // Menu cards - versión usuario normal
+        add(createUserMenuCards());
 
         // Logout action
         header.getLogoutButton().addActionListener(e -> logout());
@@ -42,7 +46,7 @@ public class InicioVisual extends JFrame {
         return panel;
     }
 
-    private JPanel createMenuCards() {
+    private JPanel createUserMenuCards() {
         JPanel container = new JPanel(new BorderLayout());
         container.setBackground(new Color(39, 39, 39));
         container.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
@@ -51,12 +55,49 @@ public class InicioVisual extends JFrame {
         cards.setLayout(new GridLayout(0, 4, 20, 20));
         cards.setOpaque(false);
 
-        for (int i = 1; i <= 6; i++) {
-            cards.add(new MenuCard(i));
+        // Obtener menús desde el archivo
+        List<String[]> menusData = leerMenusDesdeArchivo();
+
+        for (String[] menuData : menusData) {
+            // Crear tarjeta con los datos del menú
+            MenuCard card = new MenuCard(
+                    Integer.parseInt(menuData[4]) // cantidadUsuarios
+            );
+            card.hideAdminButtons(); // Ocultar botones de admin
+            cards.add(card);
         }
 
-        container.add(cards, BorderLayout.CENTER);
+        // Scroll por si hay muchos menús
+        JScrollPane scrollPane = new JScrollPane(cards);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+        container.add(scrollPane, BorderLayout.CENTER);
         return container;
+    }
+
+    private List<String[]> leerMenusDesdeArchivo() {
+        List<String[]> menus = new ArrayList<>();
+        String filePath = "menuDataBase.txt";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                // Dividir la línea por el caracter "|"
+                String[] menuData = line.split("\\|");
+                if (menuData.length >= 5) { // Asegurarse que tiene los campos mínimos
+                    menus.add(menuData);
+                }
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error al leer los menús: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        return menus;
     }
 
     private void logout() {
