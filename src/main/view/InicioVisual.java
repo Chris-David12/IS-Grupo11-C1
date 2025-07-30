@@ -54,12 +54,10 @@ public class InicioVisual extends JFrame {
         int cantidadUsuarios = Integer.parseInt(menuData[4]);
 
         MenuCard card = new MenuCard(tipo, fecha, horario, descripcion, cantidadUsuarios);
-        card.hideAdminButtons(); // Oculta botones de edición/eliminación
-        
         // Personaliza la apariencia para usuario normal
         card.setBackground(new Color(60, 60, 60));
         card.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        
+
         return card;
     }
 
@@ -70,7 +68,7 @@ public class InicioVisual extends JFrame {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             // Saltar la primera línea si es un encabezado
             br.readLine();
-            
+
             String line;
             while ((line = br.readLine()) != null) {
                 line = line.trim();
@@ -82,9 +80,9 @@ public class InicioVisual extends JFrame {
                 }
             }
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, 
-                "Error al leer los menús: " + e.getMessage(),
-                "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "Error al leer los menús: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
 
         return menus;
@@ -103,38 +101,39 @@ public class InicioVisual extends JFrame {
             frame.setVisible(true);
         });
     }
-        private JPanel createUserMenuCards() {
-    JPanel container = new JPanel(new BorderLayout());
-    container.setBackground(new Color(39, 39, 39));
-    container.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
-    
-    List<String[]> menusData = leerMenusDesdeArchivo();
-    
-    if (menusData.isEmpty() || menusData == null) {
-        JLabel noMenusLabel = new JLabel("No hay menús disponibles actualmente");
-        noMenusLabel.setForeground(Color.WHITE);
-        noMenusLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
-        container.add(noMenusLabel, BorderLayout.CENTER);
-    } else {
-        JPanel cardsPanel = new JPanel(new GridLayout(0, 3, 20, 20)); // 3 columnas
-        cardsPanel.setOpaque(false);
-        
-        for (String[] menuData : menusData) {
-            if (menuData.length >= 5) {
-                MenuCard card = createMenuCard(menuData);
-                cardsPanel.add(card);
+
+    private JPanel createUserMenuCards() {
+        JPanel container = new JPanel(new BorderLayout());
+        container.setBackground(new Color(39, 39, 39));
+        container.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
+
+        List<String[]> menusData = leerMenusDesdeArchivo();
+
+        if (menusData.isEmpty() || menusData == null) {
+            JLabel noMenusLabel = new JLabel("No hay menús disponibles actualmente");
+            noMenusLabel.setForeground(Color.WHITE);
+            noMenusLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
+            container.add(noMenusLabel, BorderLayout.CENTER);
+        } else {
+            JPanel cardsPanel = new JPanel(new GridLayout(0, 3, 20, 20)); // 3 columnas
+            cardsPanel.setOpaque(false);
+
+            for (String[] menuData : menusData) {
+                if (menuData.length >= 5) {
+                    MenuCard card = createMenuCard(menuData);
+                    cardsPanel.add(card);
+                }
             }
+
+            JScrollPane scrollPane = new JScrollPane(cardsPanel);
+            scrollPane.setOpaque(false);
+            scrollPane.getViewport().setOpaque(false);
+            scrollPane.setBorder(BorderFactory.createEmptyBorder());
+
+            container.add(scrollPane, BorderLayout.CENTER);
         }
-        
-        JScrollPane scrollPane = new JScrollPane(cardsPanel);
-        scrollPane.setOpaque(false);
-        scrollPane.getViewport().setOpaque(false);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        
-        container.add(scrollPane, BorderLayout.CENTER);
+
+        return container;
     }
-    
-    return container;
-}
 
 }

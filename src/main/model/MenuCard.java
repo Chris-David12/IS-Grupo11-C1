@@ -31,16 +31,4 @@ public class MenuCard extends JPanel {
         add(Box.createVerticalStrut(5));
         add(description);
     }
-
-    public void hideAdminButtons() {
-        Component editButton = null;
-        // Suponiendo que estos son los botones de admin
-        editButton.setVisible(false);
-        Component deleteButton = null;
-        deleteButton.setVisible(false);
-
-        // Reajustar el layout si es necesario
-        revalidate();
-        repaint();
-    }
 }
