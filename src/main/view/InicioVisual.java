@@ -46,37 +46,21 @@ public class InicioVisual extends JFrame {
         return panel;
     }
 
-    private JPanel createUserMenuCards() {
-        JPanel container = new JPanel(new BorderLayout());
-        container.setBackground(new Color(39, 39, 39));
-        container.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
+    private MenuCard createMenuCard(String[] menuData) {
+        String tipo = menuData[0];
+        String fecha = menuData[1];
+        String horario = menuData[2];
+        String descripcion = menuData[3];
+        int cantidadUsuarios = Integer.parseInt(menuData[4]);
 
-        JPanel cards = new JPanel();
-        cards.setLayout(new GridLayout(0, 4, 20, 20));
-        cards.setOpaque(false);
-
-        // Obtener menús desde el archivo
-        List<String[]> menusData = leerMenusDesdeArchivo();
-
-        for (String[] menuData : menusData) {
-            // Crear tarjeta con los datos del menú
-            MenuCard card = new MenuCard(
-                    Integer.parseInt(menuData[4]) // cantidadUsuarios
-            );
-            card.hideAdminButtons(); // Ocultar botones de admin
-            cards.add(card);
-        }
-
-        // Scroll por si hay muchos menús
-        JScrollPane scrollPane = new JScrollPane(cards);
-        scrollPane.setOpaque(false);
-        scrollPane.getViewport().setOpaque(false);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-
-        container.add(scrollPane, BorderLayout.CENTER);
-        return container;
+        MenuCard card = new MenuCard(tipo, fecha, horario, descripcion, cantidadUsuarios);
+        card.hideAdminButtons(); // Oculta botones de edición/eliminación
+        
+        // Personaliza la apariencia para usuario normal
+        card.setBackground(new Color(60, 60, 60));
+        card.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        
+        return card;
     }
 
     private List<String[]> leerMenusDesdeArchivo() {
@@ -84,17 +68,23 @@ public class InicioVisual extends JFrame {
         String filePath = "menuDataBase.txt";
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            // Saltar la primera línea si es un encabezado
+            br.readLine();
+            
             String line;
             while ((line = br.readLine()) != null) {
-                // Dividir la línea por el caracter "|"
-                String[] menuData = line.split("\\|");
-                if (menuData.length >= 5) { // Asegurarse que tiene los campos mínimos
-                    menus.add(menuData);
+                line = line.trim();
+                if (!line.isEmpty()) {
+                    String[] menuData = line.split("\\|");
+                    if (menuData.length >= 5) {
+                        menus.add(menuData);
+                    }
                 }
             }
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error al leer los menús: " + e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, 
+                "Error al leer los menús: " + e.getMessage(),
+                "Error", JOptionPane.ERROR_MESSAGE);
         }
 
         return menus;
@@ -107,6 +97,44 @@ public class InicioVisual extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new InicioVisual().setVisible(true));
+        SwingUtilities.invokeLater(() -> {
+            InicioVisual frame = new InicioVisual();
+            frame.setLocationRelativeTo(null); // Centrar la ventana
+            frame.setVisible(true);
+        });
     }
+        private JPanel createUserMenuCards() {
+    JPanel container = new JPanel(new BorderLayout());
+    container.setBackground(new Color(39, 39, 39));
+    container.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
+    
+    List<String[]> menusData = leerMenusDesdeArchivo();
+    
+    if (menusData.isEmpty() || menusData == null) {
+        JLabel noMenusLabel = new JLabel("No hay menús disponibles actualmente");
+        noMenusLabel.setForeground(Color.WHITE);
+        noMenusLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
+        container.add(noMenusLabel, BorderLayout.CENTER);
+    } else {
+        JPanel cardsPanel = new JPanel(new GridLayout(0, 3, 20, 20)); // 3 columnas
+        cardsPanel.setOpaque(false);
+        
+        for (String[] menuData : menusData) {
+            if (menuData.length >= 5) {
+                MenuCard card = createMenuCard(menuData);
+                cardsPanel.add(card);
+            }
+        }
+        
+        JScrollPane scrollPane = new JScrollPane(cardsPanel);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        
+        container.add(scrollPane, BorderLayout.CENTER);
+    }
+    
+    return container;
+}
+
 }

@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MenuCard extends JPanel {
-    public MenuCard(int menuNumber) {
+    public MenuCard(String menuData, String menuData2, String menuData3, String menuData4, int menuNumber) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(new Color(48, 43, 47));
         setBorder(BorderFactory.createCompoundBorder(
