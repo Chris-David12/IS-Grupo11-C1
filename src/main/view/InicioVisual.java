@@ -11,7 +11,7 @@ import main.model.MenuCard;
 
 public class InicioVisual extends JFrame {
     public InicioVisual() {
-        setTitle("Inicio");
+        setTitle("Inicio - Usuario");
         setSize(1280, 720);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
@@ -26,7 +26,7 @@ public class InicioVisual extends JFrame {
         // Menú title
         add(createMenuTitle());
 
-        // Menu cards - versión usuario normal
+        // Menu cards
         add(createUserMenuCards());
 
         // Logout action
@@ -46,62 +46,6 @@ public class InicioVisual extends JFrame {
         return panel;
     }
 
-    private MenuCard createMenuCard(String[] menuData) {
-        String tipo = menuData[0];
-        String fecha = menuData[1];
-        String horario = menuData[2];
-        String descripcion = menuData[3];
-        int cantidadUsuarios = Integer.parseInt(menuData[4]);
-
-        MenuCard card = new MenuCard(tipo, fecha, horario, descripcion, cantidadUsuarios);
-        // Personaliza la apariencia para usuario normal
-        card.setBackground(new Color(60, 60, 60));
-        card.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        return card;
-    }
-
-    private List<String[]> leerMenusDesdeArchivo() {
-        List<String[]> menus = new ArrayList<>();
-        String filePath = "menuDataBase.txt";
-
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            // Saltar la primera línea si es un encabezado
-            br.readLine();
-
-            String line;
-            while ((line = br.readLine()) != null) {
-                line = line.trim();
-                if (!line.isEmpty()) {
-                    String[] menuData = line.split("\\|");
-                    if (menuData.length >= 5) {
-                        menus.add(menuData);
-                    }
-                }
-            }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this,
-                    "Error al leer los menús: " + e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
-        }
-
-        return menus;
-    }
-
-    private void logout() {
-        controlerInicioUser.limpiarArchivoSesion();
-        new LoginVisual().setVisible(true);
-        dispose();
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            InicioVisual frame = new InicioVisual();
-            frame.setLocationRelativeTo(null); // Centrar la ventana
-            frame.setVisible(true);
-        });
-    }
-
     private JPanel createUserMenuCards() {
         JPanel container = new JPanel(new BorderLayout());
         container.setBackground(new Color(39, 39, 39));
@@ -109,7 +53,7 @@ public class InicioVisual extends JFrame {
 
         List<String[]> menusData = leerMenusDesdeArchivo();
 
-        if (menusData.isEmpty() || menusData == null) {
+        if (menusData.isEmpty()) {
             JLabel noMenusLabel = new JLabel("No hay menús disponibles actualmente");
             noMenusLabel.setForeground(Color.WHITE);
             noMenusLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
@@ -119,9 +63,11 @@ public class InicioVisual extends JFrame {
             cardsPanel.setOpaque(false);
 
             for (String[] menuData : menusData) {
-                if (menuData.length >= 5) {
+                try {
                     MenuCard card = createMenuCard(menuData);
                     cardsPanel.add(card);
+                } catch (Exception e) {
+                    System.err.println("Error al crear tarjeta de menú: " + e.getMessage());
                 }
             }
 
@@ -136,4 +82,69 @@ public class InicioVisual extends JFrame {
         return container;
     }
 
+    private MenuCard createMenuCard(String[] menuData) {
+        // Validar que tenemos los datos mínimos necesarios
+        if (menuData.length < 5) {
+            throw new IllegalArgumentException("Datos de menú incompletos");
+        }
+
+        String tipo = menuData[0].trim();
+        String fecha = menuData[1].trim();
+        String horario = menuData[2].trim();
+        String descripcion = menuData[3].trim();
+        int cantidadUsuarios = Integer.parseInt(menuData[4].trim());
+
+        MenuCard card = new MenuCard(tipo, fecha, horario, descripcion, cantidadUsuarios);// Oculta botones de
+                                                                                          // edición/eliminación
+
+        // Estilo para usuario normal
+        card.setBackground(new Color(60, 60, 60));
+        card.setBorder(BorderFactory.createLineBorder(new Color(100, 100, 100), 1));
+        card.setPreferredSize(new Dimension(300, 200));
+
+        return card;
+    }
+
+    private List<String[]> leerMenusDesdeArchivo() {
+        List<String[]> menus = new ArrayList<>();
+        String filePath = "menuDataBase.txt";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            // Saltar encabezado si existe
+            br.readLine();
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (!line.isEmpty()) {
+                    String[] menuData = line.split("\\|");
+                    if (menuData.length >= 5) {
+                        menus.add(menuData);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al cargar los menús: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            System.err.println("Error inesperado: " + e.getMessage());
+        }
+
+        return menus;
+    }
+
+    private void logout() {
+        controlerInicioUser.limpiarArchivoSesion();
+        new LoginVisual().setVisible(true);
+        dispose();
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            InicioVisual frame = new InicioVisual();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
+    }
 }
