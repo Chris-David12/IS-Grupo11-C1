@@ -56,7 +56,7 @@ public class controlerInicioUser {
         }
     }
 
-    private void actualizarBD() throws IOException{
+    public void actualizarBD() throws IOException{
         File archivo = new File("dataBase.txt");
         List<String> lineas = new ArrayList<>();
 
