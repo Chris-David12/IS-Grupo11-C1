@@ -58,15 +58,6 @@ public class MenuCard extends JPanel {
         buttonPanel.setOpaque(false);
         buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        buyButton = new JButton("Apartar");
-
-        styleButton(buyButton);
-
-        buttonPanel.add(buyButton);
-        buttonPanel.add(Box.createHorizontalStrut(10));
-
-        add(Box.createVerticalStrut(10));
-        add(buttonPanel);
     }
 
     private String formatDescription(String desc) {

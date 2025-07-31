@@ -15,12 +15,13 @@ import main.model.HeaderPanel;
 import main.model.AddMenuCard;
 import main.model.MenuCardAdmin;
 import main.model.MenuEditorDialog;
+import main.controller.controllerMenu;
 
 public class InicioVisualAdmin extends JFrame {
     private List<TarjetaMenu> tarjetas = new ArrayList<>();
     private JPanel panelCartas;
     private int nextId = 1;
-    
+
     public InicioVisualAdmin() {
         configureWindow();
         initUI();
@@ -47,10 +48,12 @@ public class InicioVisualAdmin extends JFrame {
         header.getLogoutButton().addActionListener(e -> logout());
 
         // Acción para el botón extra
-        /*header.getExtraButton().addActionListener(e -> {
-            new EscaneoFacial().setVisible(true);
-            dispose();
-        });*/
+        /*
+         * header.getExtraButton().addActionListener(e -> {
+         * new EscaneoFacial().setVisible(true);
+         * dispose();
+         * });
+         */
 
         // Título
         add(createTitlePanel("Gestor de Menús"));
@@ -66,9 +69,9 @@ public class InicioVisualAdmin extends JFrame {
 
         // Agregar JScrollPane aquí
         JScrollPane scrollPane = new JScrollPane(panelCartas);
-            scrollPane.setOpaque(false);
-            scrollPane.getViewport().setOpaque(false);
-            scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.getVerticalScrollBar().setUnitIncrement(16); // Desplazamiento suave
 
         cardsContainer.add(scrollPane, BorderLayout.CENTER);
@@ -234,7 +237,7 @@ public class InicioVisualAdmin extends JFrame {
         }
     }
 
-    private void scanFace(TarjetaMenu tarjeta){
+    private void scanFace(TarjetaMenu tarjeta) {
         new EscaneoFacial(tarjeta).setVisible(true);
         dispose();
     }
@@ -257,7 +260,9 @@ public class InicioVisualAdmin extends JFrame {
 
         if (menuEditado != null) {
             // Validar los datos antes de agregar
-            if (validarMenu(menuEditado)) {
+
+            controllerMenu ctrlmenu = new controllerMenu();
+            if (ctrlmenu.validarMenu(menuEditado)) {
                 tarjetas.add(menuEditado);
                 refreshCards();
                 saveMenuData();
@@ -272,13 +277,4 @@ public class InicioVisualAdmin extends JFrame {
             }
         }
     }
-
-    private boolean validarMenu(TarjetaMenu menu) {
-        return !menu.getTipo().isEmpty() &&
-                !menu.getFecha().isEmpty() &&
-                !menu.getHorario().isEmpty() &&
-                menu.getCantidadUsuarios() > 0;
-    }
-
-    
 }
