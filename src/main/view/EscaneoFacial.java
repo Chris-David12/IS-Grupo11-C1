@@ -1,13 +1,17 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import javax.swing.border.EmptyBorder;
 
 import main.model.TarjetaMenu;
 import main.model.MenuCardAdmin;
 import main.controller.controlerInicioUser;
+import main.controller.controlerScanner;
 import main.model.AuthPanel;
 import main.model.RoundedButton;
 
@@ -16,15 +20,15 @@ public class EscaneoFacial extends JFrame {
     private AuthPanel authPanel;
     private double valorVariable = 200.0;
     private TarjetaMenu menu;
+    private BufferedImage imagenCargada; 
 
     public EscaneoFacial(TarjetaMenu tmenu) {
         this.menu= tmenu;
         
         setTitle("Escaneo Facial - Comedor Estudiantil");
-        setSize(1280, 720);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-
         getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         getContentPane().setBackground(new Color(39, 39, 39));
 
@@ -190,27 +194,27 @@ public class EscaneoFacial extends JFrame {
 
         // Habilitar drag & drop
         lblImagen.setTransferHandler(new TransferHandler() {
-            @Override
-            public boolean canImport(TransferSupport support) {
-                return support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
-            }
-            @Override
-            public boolean importData(TransferSupport support) {
-                try {
-                    List<File> files = (List<File>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
-                    if (!files.isEmpty()) {
-                        ImageIcon icon = new ImageIcon(files.get(0).getAbsolutePath());
-                        Image img = icon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
-                        lblImagen.setIcon(new ImageIcon(img));
-                        lblImagen.setText("");
-                        return true;
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+        @Override
+        public boolean importData(TransferSupport support) {
+            try {
+                List<File> files = (List<File>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+                if (!files.isEmpty()) {
+                    File file = files.get(0);
+                    imagenCargada = ImageIO.read(file); // Guarda como BufferedImage
+                    
+                    // Muestra la imagen en el JLabel
+                    ImageIcon icon = new ImageIcon(imagenCargada.getScaledInstance(200, 200, Image.SCALE_SMOOTH));
+                    lblImagen.setIcon(icon);
+                    lblImagen.setText("");
+                    return true;
                 }
-                return false;
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
-        });
+            return false;
+        }
+    });
+
 
             // Botón para cargar imagen manualmente
         gbcCampos.gridy++;
@@ -226,11 +230,17 @@ public class EscaneoFacial extends JFrame {
             JFileChooser fileChooser = new JFileChooser();
             int result = fileChooser.showOpenDialog(panelCampos);
             if (result == JFileChooser.APPROVE_OPTION) {
-                File file = fileChooser.getSelectedFile();
-                ImageIcon icon = new ImageIcon(file.getAbsolutePath());
-                Image img = icon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
-                lblImagen.setIcon(new ImageIcon(img));
-                lblImagen.setText("");
+                try {
+                    File file = fileChooser.getSelectedFile();
+                    imagenCargada = ImageIO.read(file); // Guarda como BufferedImage
+                    
+                    // Muestra la imagen en el JLabel
+                    ImageIcon icon = new ImageIcon(imagenCargada.getScaledInstance(200, 200, Image.SCALE_SMOOTH));
+                    lblImagen.setIcon(icon);
+                    lblImagen.setText("");
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         });
 
@@ -245,6 +255,40 @@ public class EscaneoFacial extends JFrame {
         btnRecargarSaldo.setForeground(Color.WHITE);
         btnRecargarSaldo.setPreferredSize(new Dimension(200, 50));
         panelCampos.add(btnRecargarSaldo, gbcCampos);
+
+        btnRecargarSaldo.addActionListener(e -> {
+            
+            controlerScanner controlScan = new controlerScanner();
+
+                if (imagenCargada != null) {
+
+                    String ci = txtCedula.getText();
+                    boolean validacion = controlScan.compareImages(ci,imagenCargada,20);
+
+                    if(validacion){
+                        controlScan.Buscar(ci);
+                        if(controlScan.usuario.saldoSuficiente(tmenu.getCCB())){
+                            controlScan.usuario.descontarSaldo(tmenu.getCCB());
+                            try {
+                                controlScan.usuario.actualizarBD();
+                                JOptionPane.showMessageDialog(this, "Imagen escaneada correctamente", "EXITOSO", JOptionPane.INFORMATION_MESSAGE);
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }else{
+                          JOptionPane.showMessageDialog(this, "Saldo insuficiente para la operación solicitada", "ERROR", JOptionPane.ERROR_MESSAGE); 
+                        }
+                        
+                    }else{
+                        JOptionPane.showMessageDialog(this, "Imagen erronea o usuario incorrecto", "ERROR", JOptionPane.ERROR_MESSAGE);
+
+                    }
+                    
+                } else {
+                    JOptionPane.showMessageDialog(this, "Por favor, carga una imagen primero.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+        });
+
 
         panelCampos.setPreferredSize(new Dimension(800, 400)); // Ajusta el tamaño según tu preferencia
         panelCampos.setMaximumSize(new Dimension(900, 500));   // Opcional, para BoxLayout
