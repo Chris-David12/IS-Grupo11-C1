@@ -49,7 +49,6 @@ public class InicioVisualAdmin extends JFrame {
         // Acción para el botón extra
         header.getExtraButton().addActionListener(e -> {
             new EscaneoFacial().setVisible(true);
-            // Si quieres cerrar la ventana actual, puedes usar: dispose();
             dispose();
         });
 
@@ -65,7 +64,14 @@ public class InicioVisualAdmin extends JFrame {
         panelCartas.setLayout(new GridLayout(0, 4, 20, 20));
         panelCartas.setOpaque(false);
 
-        cardsContainer.add(panelCartas, BorderLayout.CENTER);
+        // Agregar JScrollPane aquí
+        JScrollPane scrollPane = new JScrollPane(panelCartas);
+            scrollPane.setOpaque(false);
+            scrollPane.getViewport().setOpaque(false);
+            scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16); // Desplazamiento suave
+
+        cardsContainer.add(scrollPane, BorderLayout.CENTER);
         add(cardsContainer);
 
         refreshCards();
