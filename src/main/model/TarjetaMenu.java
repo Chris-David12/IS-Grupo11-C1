@@ -9,6 +9,7 @@ public class TarjetaMenu {
     private int cantidadUsuarios;
     private double constante;
     private double variable;
+    private float ccb;
 
     public TarjetaMenu(int id, String tipo, String fecha, String horario, String descripcion,
             int cantidadUsuarios, double constante, double variable) {
@@ -20,6 +21,7 @@ public class TarjetaMenu {
         this.cantidadUsuarios = cantidadUsuarios;
         this.constante = constante;
         this.variable = variable;
+        this.ccb = this.calcular(constante,variable,cantidadUsuarios);
     }
 
     // Getters y Setters
@@ -83,12 +85,29 @@ public class TarjetaMenu {
         this.variable = variable;
     }
 
-    public double getCCB() {
-        return constante + variable;
+    public Float calcular(double cf, double cv, int nb){
+
+        Float MERMA = 0.2f;
+        Float ccb = null;
+        
+        ccb = (float)((cf + cv)/nb);
+        ccb = ccb * (1 + MERMA);
+
+        ccb = Math.round(ccb * 100) / 100.0f;
+   
+        return ccb;
     }
 
+    public float getCCB() {
+        return ccb;
+    }
+
+    public void setCCB(float ccb){
+        this.ccb = ccb;
+    }
+
+
     public void setId(int i) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setId'");
+        this.id=i;
     }
 }

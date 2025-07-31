@@ -5,15 +5,21 @@ import java.io.File;
 import java.util.List;
 import javax.swing.border.EmptyBorder;
 
+import main.model.TarjetaMenu;
+import main.model.MenuCardAdmin;
 import main.controller.controlerInicioUser;
 import main.model.AuthPanel;
 import main.model.RoundedButton;
 
+
 public class EscaneoFacial extends JFrame {
     private AuthPanel authPanel;
     private double valorVariable = 200.0;
+    private TarjetaMenu menu;
 
-    public EscaneoFacial() {
+    public EscaneoFacial(TarjetaMenu tmenu) {
+        this.menu= tmenu;
+        
         setTitle("Escaneo Facial - Comedor Estudiantil");
         setSize(1280, 720);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -95,8 +101,7 @@ public class EscaneoFacial extends JFrame {
         panelBotones.setLayout(new BoxLayout(panelBotones, BoxLayout.Y_AXIS));
         panelBotones.setBorder(new EmptyBorder(60, 0, 0, 50));
 
-        controlerInicioUser cLU = new controlerInicioUser();
-
+        controlerInicioUser cLU = controlerInicioUser.getInstance();
         JButton NameAdmin = new JButton(cLU.usuario);
         NameAdmin.setFont(new Font("Roboto", Font.BOLD, 18));
         NameAdmin.setBackground(new Color(21, 174, 92));
@@ -107,7 +112,7 @@ public class EscaneoFacial extends JFrame {
         NameAdmin.setPreferredSize(new Dimension(200, 40));
         NameAdmin.setMinimumSize(new Dimension(200, 40));
 
-        JButton botonLogin = new JButton("CERRAR SESIÓN");
+        JButton botonLogin = new JButton("VOLVER");
         botonLogin.setFont(new Font("Roboto", Font.BOLD, 18));
         botonLogin.setBackground(new Color(48, 43, 47));
         botonLogin.setForeground(Color.WHITE);
@@ -120,6 +125,8 @@ public class EscaneoFacial extends JFrame {
         panelBotones.add(NameAdmin);
         panelBotones.add(Box.createRigidArea(new Dimension(0, 10)));
         panelBotones.add(botonLogin);
+
+        botonLogin.addActionListener(e -> volver());
 
         panelSuperior.add(panelBotones, BorderLayout.EAST);
 
@@ -178,6 +185,8 @@ public class EscaneoFacial extends JFrame {
         lblImagen.setPreferredSize(new Dimension(400, 200));
         lblImagen.setBorder(BorderFactory.createDashedBorder(Color.GRAY));
         panelCampos.add(lblImagen, gbcCampos);
+
+
 
         // Habilitar drag & drop
         lblImagen.setTransferHandler(new TransferHandler() {
@@ -246,16 +255,10 @@ public class EscaneoFacial extends JFrame {
         getContentPane().add(scroll);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            try {
-                EscaneoFacial frame = new EscaneoFacial(); // <-- Cambia aquí
-                frame.setLocationRelativeTo(null); // Centrar la ventana
-                frame.setVisible(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Error al iniciar la ventana: " + e.getMessage());
-            }
-        });
+    private void volver() {
+
+        new InicioVisualAdmin().setVisible(true);
+        dispose();
     }
+
 }

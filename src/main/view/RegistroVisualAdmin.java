@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import main.model.ImagePanel;
 import main.model.RegisterForm;
 
+
 public class RegistroVisualAdmin extends JFrame {
     private RegisterForm registerForm;
 

@@ -2,7 +2,6 @@ package main.model;
 
 import javax.swing.*;
 import java.awt.*;
-import main.model.TarjetaMenu;
 
 public class MenuEditorDialog {
     public static TarjetaMenu showDialog(Component parent, TarjetaMenu tarjetaExistente) {

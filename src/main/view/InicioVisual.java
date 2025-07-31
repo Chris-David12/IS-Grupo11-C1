@@ -5,30 +5,25 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import main.controller.controlerInicioUser;
 import main.model.HeaderPanel;
 import main.model.MenuCard;
 
+
 public class InicioVisual extends JFrame {
     public InicioVisual() {
         setTitle("Inicio - Usuario");
-        setSize(1280, 720);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         getContentPane().setBackground(new Color(39, 39, 39));
 
-        controlerInicioUser cLU = new controlerInicioUser();
+        controlerInicioUser cLU = controlerInicioUser.getInstance();
 
         // Header
         HeaderPanel header = new HeaderPanel(cLU, false);
         add(header);
-
-        // Acción para el botón extra
-        header.getExtraButton().addActionListener(e -> {
-            new RecargarSaldoVisual().setVisible(true);
-            // Si quieres cerrar la ventana actual, puedes usar: dispose();
-            dispose();
-        });
 
         // Menú title
         add(createMenuTitle());
@@ -38,6 +33,11 @@ public class InicioVisual extends JFrame {
 
         // Logout action
         header.getLogoutButton().addActionListener(e -> logout());
+
+        header.getExtraButton().addActionListener(e -> {
+            new RecargarSaldoVisual().setVisible(true);
+            dispose();
+        });
     }
 
     private JPanel createMenuTitle() {

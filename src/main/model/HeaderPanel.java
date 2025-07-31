@@ -1,5 +1,6 @@
 package main.model;
 
+
 import javax.swing.*;
 import java.awt.*;
 import main.controller.controlerInicioUser;
@@ -63,29 +64,32 @@ public class HeaderPanel extends JPanel {
         userLabel.setFont(new Font("Roboto", Font.BOLD, 18));
         userLabel.setForeground(Color.WHITE);
 
+
+        panel.add(userLabel);
+
         if (!isAdmin) {
             JLabel balanceLabel = new JLabel("Saldo: " + cLU.saldo + " Bs");
             balanceLabel.setFont(new Font("Roboto", Font.BOLD, 18));
             balanceLabel.setForeground(Color.WHITE);
             panel.add(balanceLabel);
         }
-
-        panel.add(userLabel);
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
 
-        // Botón adicional según el tipo de usuario
-        String botonTexto = isAdmin ? "Escaneo Facial" : "Recargar Saldo";
-        extraButton = new JButton(botonTexto); // <-- Ahora es el atributo de la claseAhora es el atributo de la clase
-        extraButton.setFont(new Font("Roboto", Font.BOLD, 18));
-        extraButton.setBackground(new Color(48, 43, 47));
-        extraButton.setForeground(Color.WHITE);
-        extraButton.setBorderPainted(false);
-        extraButton.setFocusPainted(false);
-        extraButton.setMaximumSize(new Dimension(200, 40));
-        extraButton.setPreferredSize(new Dimension(200, 40));
-        extraButton.setMinimumSize(new Dimension(200, 40));
-        panel.add(extraButton);
-        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        if(!isAdmin){
+            String botonTexto = "Recargar Saldo";
+            extraButton = new JButton(botonTexto); // <-- Ahora es el atributo de la claseAhora es el atributo de la clase
+            extraButton.setFont(new Font("Roboto", Font.BOLD, 18));
+            extraButton.setBackground(new Color(48, 43, 47));
+            extraButton.setForeground(Color.WHITE);
+            extraButton.setBorderPainted(false);
+            extraButton.setFocusPainted(false);
+            extraButton.setMaximumSize(new Dimension(200, 40));
+            extraButton.setPreferredSize(new Dimension(200, 40));
+            extraButton.setMinimumSize(new Dimension(200, 40));
+            panel.add(extraButton);
+            panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        }
+        
 
         logoutButton = new JButton("CERRAR SESIÓN");
         logoutButton.setFont(new Font("Roboto", Font.BOLD, 18));

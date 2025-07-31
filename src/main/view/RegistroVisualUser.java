@@ -6,6 +6,8 @@ import javax.swing.border.EmptyBorder;
 import main.model.ImagePanel;
 import main.model.RegisterForm;
 
+
+
 public class RegistroVisualUser extends JFrame {
     private RegisterForm registerForm;
 

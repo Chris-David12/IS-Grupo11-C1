@@ -3,11 +3,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.regex.Pattern;
+
 import main.controller.controlerLogin;
 import main.model.AuthPanel;
 import main.model.RoundedButton;
 import main.model.RoundedTextField;
 import main.model.RoundedPasswordField;
+
 
 public class LoginVisual extends JFrame {
     private AuthPanel authPanel;

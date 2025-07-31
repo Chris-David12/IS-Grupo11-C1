@@ -20,7 +20,7 @@ public class InicioVisualAdmin extends JFrame {
     private List<TarjetaMenu> tarjetas = new ArrayList<>();
     private JPanel panelCartas;
     private int nextId = 1;
-
+    
     public InicioVisualAdmin() {
         configureWindow();
         initUI();
@@ -29,7 +29,7 @@ public class InicioVisualAdmin extends JFrame {
 
     private void configureWindow() {
         setTitle("Inicio - Administrador");
-        setSize(1280, 720);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
@@ -37,7 +37,7 @@ public class InicioVisualAdmin extends JFrame {
     }
 
     private void initUI() {
-        controlerInicioUser cLU = new controlerInicioUser();
+        controlerInicioUser cLU = controlerInicioUser.getInstance();
 
         // Header
         HeaderPanel header = new HeaderPanel(cLU, true);
@@ -47,10 +47,10 @@ public class InicioVisualAdmin extends JFrame {
         header.getLogoutButton().addActionListener(e -> logout());
 
         // Acción para el botón extra
-        header.getExtraButton().addActionListener(e -> {
+        /*header.getExtraButton().addActionListener(e -> {
             new EscaneoFacial().setVisible(true);
             dispose();
-        });
+        });*/
 
         // Título
         add(createTitlePanel("Gestor de Menús"));
@@ -117,9 +117,9 @@ public class InicioVisualAdmin extends JFrame {
                 // Si el archivo no existe, crear uno con datos de ejemplo
                 file.createNewFile();
                 try (PrintWriter writer = new PrintWriter(file)) {
-                    writer.println("tipo|fecha|horario|descripcion|cantidadUsuarios|constante|variable");
-                    writer.println("Desayuno|2025-07-29|07:00-09:00|Café y pan|50|100.0|50.0");
-                    writer.println("Almuerzo|2025-07-29|12:00-14:00|Sopa y segundo|80|120.0|60.0");
+                    writer.println("id|tipo|fecha|horario|descripcion|cantidadUsuarios|constante|variable|CCB");
+                    writer.println("1|Desayuno|2025-07-29|07:00-09:00|Café y pan|50|100.0|50.0|3.4");
+                    writer.println("2|Almuerzo|2025-07-29|12:00-14:00|Sopa y segundo|80|120.0|60.0|2.7");
                 }
             }
 
@@ -193,7 +193,8 @@ public class InicioVisualAdmin extends JFrame {
         for (TarjetaMenu t : tarjetas) {
             panelCartas.add(new MenuCardAdmin(t,
                     e -> editTarjeta(t),
-                    e -> deleteTarjeta(t)));
+                    e -> deleteTarjeta(t),
+                    e -> scanFace(t)));
         }
 
         // Tarjeta para agregar nuevo menú
@@ -214,6 +215,7 @@ public class InicioVisualAdmin extends JFrame {
             tarjeta.setCantidadUsuarios(edited.getCantidadUsuarios());
             tarjeta.setConstante(edited.getConstante());
             tarjeta.setVariable(edited.getVariable());
+            tarjeta.setCCB(edited.getCCB());
             refreshCards();
             saveMenuData(); // Guardar cambios en el archivo
         }
@@ -230,6 +232,11 @@ public class InicioVisualAdmin extends JFrame {
             refreshCards();
             saveMenuData(); // Guardar cambios en el archivo
         }
+    }
+
+    private void scanFace(TarjetaMenu tarjeta){
+        new EscaneoFacial(tarjeta).setVisible(true);
+        dispose();
     }
 
     private void addTarjeta() {
@@ -273,7 +280,5 @@ public class InicioVisualAdmin extends JFrame {
                 menu.getCantidadUsuarios() > 0;
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new InicioVisualAdmin().setVisible(true));
-    }
+    
 }

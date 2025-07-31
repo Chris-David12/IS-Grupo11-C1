@@ -14,14 +14,13 @@ import javax.swing.border.EmptyBorder;
 public class RecargarSaldoVisual extends JFrame {
     private AuthPanel authPanel;
 
-    // Declara las variables como atributos de la clase
-
-    private double valorVariable = 200.0;
+    controlerInicioUser cLU = null;
+    
 
     public RecargarSaldoVisual() {
         setTitle("Recargar Saldo - Comedor Estudiantil");
-        setSize(1280, 720);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
         // Cambia el layout principal a BoxLayout en Y
@@ -105,7 +104,7 @@ public class RecargarSaldoVisual extends JFrame {
         panelBotones.setLayout(new BoxLayout(panelBotones, BoxLayout.Y_AXIS));
         panelBotones.setBorder(new EmptyBorder(60, 0, 0, 50)); // 50px margen derecho
 
-        controlerInicioUser cLU = new controlerInicioUser();
+        controlerInicioUser cLU = controlerInicioUser.getInstance();
 
         JButton NameAdmin = new JButton(cLU.usuario);
         NameAdmin.setFont(new Font("Roboto", Font.BOLD, 18));
@@ -117,7 +116,7 @@ public class RecargarSaldoVisual extends JFrame {
         NameAdmin.setPreferredSize(new Dimension(200, 40));
         NameAdmin.setMinimumSize(new Dimension(200, 40));
 
-        JButton botonLogin = new JButton("CERRAR SESIÓN");
+        JButton botonLogin = new JButton("VOLVER");
         botonLogin.setFont(new Font("Roboto", Font.BOLD, 18));
         botonLogin.setBackground(new Color(48, 43, 47));
         botonLogin.setForeground(Color.WHITE);
@@ -175,6 +174,21 @@ public class RecargarSaldoVisual extends JFrame {
         txtCedula.setPreferredSize(new Dimension(500, 30));
         panelCampos.add(txtCedula, gbcCampos);
 
+        gbcCampos.gridx = 0;
+        gbcCampos.gridy++;
+        JLabel lblpasswrd = new JLabel("Contraseña");
+        lblpasswrd.setFont(new Font("Roboto", Font.BOLD, 22));
+        lblpasswrd.setForeground(Color.WHITE);
+        panelCampos.add(lblpasswrd, gbcCampos);
+
+        gbcCampos.gridx = 1;
+        JPasswordField txtpaswrd = new JPasswordField(12);
+        txtpaswrd.setFont(new Font("Roboto", Font.PLAIN, 20));
+        txtpaswrd.setBackground(new Color(96, 96, 96));
+        txtpaswrd.setForeground(Color.WHITE);
+        txtpaswrd.setPreferredSize(new Dimension(500, 30));
+        panelCampos.add(txtpaswrd, gbcCampos);
+
 
         // Monto
         gbcCampos.gridx = 0;
@@ -196,7 +210,7 @@ public class RecargarSaldoVisual extends JFrame {
         gbcCampos.gridx = 0;
         gbcCampos.gridy++;
         gbcCampos.gridwidth = 2;
-        JLabel lblSaldo = new JLabel("Saldo actual: " + valorVariable + " Bs");
+        JLabel lblSaldo = new JLabel("Saldo actual: " + cLU.saldo + " Bs");
         lblSaldo.setFont(new Font("Roboto", Font.PLAIN, 20));
         lblSaldo.setForeground(Color.WHITE);
         panelCampos.add(lblSaldo, gbcCampos);
@@ -216,41 +230,61 @@ public class RecargarSaldoVisual extends JFrame {
         // Agrega el panel de campos al frame
         getContentPane().add(panelCampos);
 
+        botonLogin.addActionListener(e -> volver());
+            
+      
         btnRecargarSaldo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String cedulaIngresada = txtCedula.getText().trim();
+                String passwrdIngresada = txtpaswrd.getText().trim();
                 String montoIngresado = txtMonto.getText().trim();
 
-                if (cedulaIngresada.isEmpty() || montoIngresado.isEmpty()) {
-                    JOptionPane.showMessageDialog(RecargarSaldoVisual.this, "Debe ingresar la cédula y el monto.", "Campos obligatorios", JOptionPane.WARNING_MESSAGE);
+                if (cedulaIngresada.isEmpty() || montoIngresado.isEmpty() || passwrdIngresada.isEmpty()) {
+                    JOptionPane.showMessageDialog(RecargarSaldoVisual.this, "Debe llenar todos los campos de información", "Campos obligatorios", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
 
                 // Aquí debes comparar con la cédula real del usuario. Por ejemplo:
-                String cedulaUsuario = cLU.usuario; // Ajusta esto según tu lógica real
+                
 
-                if (!cedulaIngresada.equals(cedulaUsuario)) {
+                if (!cedulaIngresada.equals(cLU.cedula)) {
                     JOptionPane.showMessageDialog(RecargarSaldoVisual.this, "La cédula no coincide con la del usuario.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
+                if (!passwrdIngresada.equals(cLU.password)) {
+                    JOptionPane.showMessageDialog(RecargarSaldoVisual.this, "Contraseña incorrecta.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
                 try {
-                    double monto = Double.parseDouble(montoIngresado);
+                    float monto = Float.parseFloat(montoIngresado);
                     if (monto <= 0) {
                         JOptionPane.showMessageDialog(RecargarSaldoVisual.this, "El monto debe ser mayor a cero.", "Error", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
-                    valorVariable += monto;
-                    lblSaldo.setText("Saldo actual: " + valorVariable + " Bs");
+                    cLU.saldo = cLU.saldo + monto;
+                    lblSaldo.setText("Saldo actual: " + cLU.saldo + " Bs");
                     JOptionPane.showMessageDialog(RecargarSaldoVisual.this, "Saldo recargado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+                    new InicioVisual().setVisible(true);
+                    dispose();
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(RecargarSaldoVisual.this, "Ingrese un monto válido.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
+
+
             }
         });
 
 
+    }
+
+    private void volver() {
+
+        new InicioVisualAdmin().setVisible(true);
+        dispose();
     }
 
     public static void main(String[] args) {

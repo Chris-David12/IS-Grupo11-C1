@@ -79,17 +79,21 @@ public class controllerMenu {
 
             String line;
             while ((line = br.readLine()) != null) {
+                System.out.println(line = br.readLine());
                 String[] parts = line.split("\\|");
-                if (parts.length >= 7) {
-                    menus.add(new TarjetaMenu(
-                            Integer.parseInt(parts[0]),
-                            parts[1],
-                            parts[2],
-                            parts[3],
-                            parts[4],
-                            Integer.parseInt(parts[5]),
-                            Double.parseDouble(parts[6]),
-                            Double.parseDouble(parts[7])));
+                 System.out.println(parts);
+                if (parts.length >= 9) {
+                    TarjetaMenu menu = new TarjetaMenu(
+                    Integer.parseInt(parts[0]),
+                    parts[1], 
+                    parts[2], 
+                    parts[3], 
+                    parts[4], 
+                    Integer.parseInt(parts[5]), // Cantidad de usuarios
+                    Double.parseDouble(parts[6]), // Constante
+                    Double.parseDouble(parts[7]));
+                    menu.setCCB(Float.parseFloat(parts[8])); 
+                    menus.add(menu);  
                 }
             }
         }
@@ -98,9 +102,9 @@ public class controllerMenu {
 
     public void guardarMenus(List<TarjetaMenu> menus) {
         try (PrintWriter writer = new PrintWriter(ARCHIVO_MENUS)) {
-            writer.println("id|tipo|fecha|horario|descripcion|cantidadUsuarios|constante|variable");
+            writer.println("id|tipo|fecha|horario|descripcion|cantidadUsuarios|constante|variable|CCB");
             for (TarjetaMenu menu : menus) {
-                writer.println(String.format("%d|%s|%s|%s|%s|%d|%.2f|%.2f",
+                writer.println(String.format("%d|%s|%s|%s|%s|%d|%.2f|%.2f|%.2f",
                         menu.getId(),
                         menu.getTipo(),
                         menu.getFecha(),
@@ -108,7 +112,8 @@ public class controllerMenu {
                         menu.getDescripcion(),
                         menu.getCantidadUsuarios(),
                         menu.getConstante(),
-                        menu.getVariable()));
+                        menu.getVariable(),
+                        menu.getCCB()));
             }
         } catch (FileNotFoundException e) {
             System.err.println("Error al guardar menús: " + e.getMessage());
@@ -117,9 +122,9 @@ public class controllerMenu {
 
     private void crearArchivoInicial() throws IOException {
         try (PrintWriter writer = new PrintWriter(ARCHIVO_MENUS)) {
-            writer.println("id|tipo|fecha|horario|descripcion|cantidadUsuarios|constante|variable");
-            writer.println("1|Desayuno|" + LocalDate.now() + "|07:00-09:00|Café, pan, fruta|50|100.0|50.0");
-            writer.println("2|Almuerzo|" + LocalDate.now() + "|12:00-14:00|Sopa, pollo, arroz|80|120.0|60.0");
+            writer.println("id|tipo|fecha|horario|descripcion|cantidadUsuarios|constante|variable|CCB");
+            writer.println("1|Desayuno|" + LocalDate.now() + "|07:00-09:00|Café, pan, fruta|50|100.0|50.0|3.4");
+            writer.println("2|Almuerzo|" + LocalDate.now() + "|12:00-14:00|Sopa, pollo, arroz|80|120.0|60.0|2.7");
         }
     }
 }
