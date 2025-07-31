@@ -46,6 +46,13 @@ public class InicioVisualAdmin extends JFrame {
         // Configurar botón de logout
         header.getLogoutButton().addActionListener(e -> logout());
 
+        // Acción para el botón extra
+        header.getExtraButton().addActionListener(e -> {
+            new EscaneoFacial().setVisible(true);
+            // Si quieres cerrar la ventana actual, puedes usar: dispose();
+            dispose();
+        });
+
         // Título
         add(createTitlePanel("Gestor de Menús"));
 

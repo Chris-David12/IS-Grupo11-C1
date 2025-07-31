@@ -1,52 +1,42 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.io.File;
+import java.util.List;
+import javax.swing.border.EmptyBorder;
 
 import main.controller.controlerInicioUser;
 import main.model.AuthPanel;
 import main.model.RoundedButton;
-import main.model.RoundedPasswordField;
-import main.model.RoundedTextField;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.border.EmptyBorder;
-
-public class RecargarSaldoVisual extends JFrame {
+public class EscaneoFacial extends JFrame {
     private AuthPanel authPanel;
-
-    // Declara las variables como atributos de la clase
-
     private double valorVariable = 200.0;
 
-    public RecargarSaldoVisual() {
-        setTitle("Recargar Saldo - Comedor Estudiantil");
+    public EscaneoFacial() {
+        setTitle("Escaneo Facial - Comedor Estudiantil");
         setSize(1280, 720);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Cambia el layout principal a BoxLayout en Y
         getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         getContentPane().setBackground(new Color(39, 39, 39));
 
-        // panel superior
+        // Panel superior
         JPanel panelSuperior = new JPanel();
         panelSuperior.setPreferredSize(new Dimension(1280, 200));
-        panelSuperior.setMinimumSize(new Dimension(0, 200));
-        panelSuperior.setMaximumSize(new Dimension(Integer.MAX_VALUE, 200));
         panelSuperior.setBackground(new Color(21, 174, 92));
         panelSuperior.setLayout(null);
 
         // Panel contenedor con margen para el panel superior
         JPanel contenedorSuperior = new JPanel(new BorderLayout());
         contenedorSuperior.setBackground(new Color(39, 39, 39));
-        contenedorSuperior.setBorder(new EmptyBorder(10, 15, 10, 15)); // top, left, bottom, right
-        contenedorSuperior.setPreferredSize(new Dimension(1280, 220)); // 200 + 2*10 de margen
-        contenedorSuperior.setMinimumSize(new Dimension(0, 220));
-        contenedorSuperior.setMaximumSize(new Dimension(Integer.MAX_VALUE, 220));
+        contenedorSuperior.setBorder(new EmptyBorder(10, 15, 10, 15));
+        contenedorSuperior.setPreferredSize(new Dimension(1280, 220));
 
         contenedorSuperior.add(panelSuperior, BorderLayout.CENTER);
 
-        // Logo pocision izquierda panel superior
+        // Logo posición izquierda panel superior
         ImageIcon iconoOriginal = new ImageIcon("../assets/logo.png");
         Image imagenOriginal = iconoOriginal.getImage();
         Image imagenEscalada = imagenOriginal.getScaledInstance(175, 175, Image.SCALE_SMOOTH);
@@ -55,7 +45,7 @@ public class RecargarSaldoVisual extends JFrame {
         logo.setBounds(20, 25, 150, 150);
         panelSuperior.add(logo);
 
-        // bienvenida
+        // Bienvenida
         JLabel bienvenida = new JLabel("Bienvenido al Comedor Estudiantil");
         bienvenida.setBounds(200, 40, 600, 100);
         bienvenida.setFont(new Font("Roboto Black", Font.BOLD, 30));
@@ -103,7 +93,7 @@ public class RecargarSaldoVisual extends JFrame {
         JPanel panelBotones = new JPanel();
         panelBotones.setOpaque(false);
         panelBotones.setLayout(new BoxLayout(panelBotones, BoxLayout.Y_AXIS));
-        panelBotones.setBorder(new EmptyBorder(60, 0, 0, 50)); // 50px margen derecho
+        panelBotones.setBorder(new EmptyBorder(60, 0, 0, 50));
 
         controlerInicioUser cLU = new controlerInicioUser();
 
@@ -128,30 +118,28 @@ public class RecargarSaldoVisual extends JFrame {
         botonLogin.setMinimumSize(new Dimension(200, 40));
 
         panelBotones.add(NameAdmin);
-        panelBotones.add(Box.createRigidArea(new Dimension(0, 10))); // separación vertical
+        panelBotones.add(Box.createRigidArea(new Dimension(0, 10)));
         panelBotones.add(botonLogin);
-
 
         panelSuperior.add(panelBotones, BorderLayout.EAST);
 
         // Agregar el panel superior al contenedor
         getContentPane().add(contenedorSuperior);
 
-                // Panel para el subtítulo alineado a la izquierda
+        // Panel para el subtítulo alineado a la izquierda
         JPanel panelSubtitulo = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panelSubtitulo.setBackground(new Color(39, 39, 39));
         panelSubtitulo.setPreferredSize(new Dimension(1280, 50));
 
-        JLabel subtitulo = new JLabel("Recargar Saldo");
+        JLabel subtitulo = new JLabel("Escaneo Facial");
         subtitulo.setFont(new Font("Roboto Black", Font.BOLD, 42));
         subtitulo.setForeground(Color.WHITE);
         subtitulo.setBorder(new EmptyBorder(0, 50, 0, 0));
         panelSubtitulo.add(subtitulo);
 
-        // Agrega el panel del subtítulo debajo del panel superior
         getContentPane().add(panelSubtitulo);
 
-        // Panel de Campos Para Recargar Saldo
+        // Panel de Campos
         authPanel = new AuthPanel();
         JPanel panelCampos = new JPanel(new GridBagLayout());
         panelCampos.setBackground(new Color(39, 39, 39));
@@ -175,88 +163,99 @@ public class RecargarSaldoVisual extends JFrame {
         txtCedula.setPreferredSize(new Dimension(500, 30));
         panelCampos.add(txtCedula, gbcCampos);
 
-
-        // Monto
-        gbcCampos.gridx = 0;
-        gbcCampos.gridy++;
-        JLabel lblMonto = new JLabel("Monto:");
-        lblMonto.setFont(new Font("Roboto", Font.BOLD, 22));
-        lblMonto.setForeground(Color.WHITE);
-        panelCampos.add(lblMonto, gbcCampos);
-
-        gbcCampos.gridx = 1;
-        JTextField txtMonto = new JTextField(12);
-        txtMonto.setFont(new Font("Roboto", Font.PLAIN, 20));
-        txtMonto.setBackground(new Color(96, 96, 96));
-        txtMonto.setForeground(Color.WHITE);
-        txtMonto.setPreferredSize(new Dimension(500, 30));        
-        panelCampos.add(txtMonto, gbcCampos);
-
-        // Saldo actual (opcional, solo visual)
+// Apartado para cargar imagen
         gbcCampos.gridx = 0;
         gbcCampos.gridy++;
         gbcCampos.gridwidth = 2;
-        JLabel lblSaldo = new JLabel("Saldo actual: " + valorVariable + " Bs");
-        lblSaldo.setFont(new Font("Roboto", Font.PLAIN, 20));
-        lblSaldo.setForeground(Color.WHITE);
-        panelCampos.add(lblSaldo, gbcCampos);
+        gbcCampos.insets = new Insets(10, 40, 10, 40);
 
-        // Botón de Recargar Saldo debajo del saldo actual
+        JLabel lblImagen = new JLabel("Arrastra una imagen aquí o haz clic en 'Cargar Imagen'");
+        lblImagen.setFont(new Font("Arial", Font.PLAIN, 18));
+        lblImagen.setForeground(Color.WHITE);
+        lblImagen.setHorizontalAlignment(SwingConstants.CENTER);
+        lblImagen.setOpaque(true);
+        lblImagen.setBackground(new Color(60, 60, 60));
+        lblImagen.setPreferredSize(new Dimension(400, 200));
+        lblImagen.setBorder(BorderFactory.createDashedBorder(Color.GRAY));
+        panelCampos.add(lblImagen, gbcCampos);
+
+        // Habilitar drag & drop
+        lblImagen.setTransferHandler(new TransferHandler() {
+            @Override
+            public boolean canImport(TransferSupport support) {
+                return support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
+            }
+            @Override
+            public boolean importData(TransferSupport support) {
+                try {
+                    List<File> files = (List<File>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+                    if (!files.isEmpty()) {
+                        ImageIcon icon = new ImageIcon(files.get(0).getAbsolutePath());
+                        Image img = icon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+                        lblImagen.setIcon(new ImageIcon(img));
+                        lblImagen.setText("");
+                        return true;
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                return false;
+            }
+        });
+
+            // Botón para cargar imagen manualmente
+        gbcCampos.gridy++;
+        gbcCampos.insets = new Insets(0, 40, 10, 40);
+        JButton btnCargarImagen = new JButton("Cargar Imagen");
+        btnCargarImagen.setFont(new Font("Arial", Font.BOLD, 18));
+        btnCargarImagen.setBackground(new Color(21, 174, 92));
+        btnCargarImagen.setForeground(Color.WHITE);
+        btnCargarImagen.setPreferredSize(new Dimension(200, 40));
+        panelCampos.add(btnCargarImagen, gbcCampos);
+
+        btnCargarImagen.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            int result = fileChooser.showOpenDialog(panelCampos);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File file = fileChooser.getSelectedFile();
+                ImageIcon icon = new ImageIcon(file.getAbsolutePath());
+                Image img = icon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+                lblImagen.setIcon(new ImageIcon(img));
+                lblImagen.setText("");
+            }
+        });
+
+        // Botón para escaneo facial
         gbcCampos.gridx = 0;
         gbcCampos.gridy++;
         gbcCampos.gridwidth = 2;
         gbcCampos.anchor = GridBagConstraints.CENTER;
-        RoundedButton btnRecargarSaldo = new RoundedButton("Recargar Saldo");
+        RoundedButton btnRecargarSaldo = new RoundedButton("Escanear");
         btnRecargarSaldo.setFont(new Font("Roboto", Font.BOLD, 22));
         btnRecargarSaldo.setBackground(new Color(21, 174, 92));
         btnRecargarSaldo.setForeground(Color.WHITE);
         btnRecargarSaldo.setPreferredSize(new Dimension(200, 50));
         panelCampos.add(btnRecargarSaldo, gbcCampos);
 
+        panelCampos.setPreferredSize(new Dimension(800, 400)); // Ajusta el tamaño según tu preferencia
+        panelCampos.setMaximumSize(new Dimension(900, 500));   // Opcional, para BoxLayout
+
         // Agrega el panel de campos al frame
-        getContentPane().add(panelCampos);
-
-        btnRecargarSaldo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String cedulaIngresada = txtCedula.getText().trim();
-                String montoIngresado = txtMonto.getText().trim();
-
-                if (cedulaIngresada.isEmpty() || montoIngresado.isEmpty()) {
-                    JOptionPane.showMessageDialog(RecargarSaldoVisual.this, "Debe ingresar la cédula y el monto.", "Campos obligatorios", JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
-
-                // Aquí debes comparar con la cédula real del usuario. Por ejemplo:
-                String cedulaUsuario = cLU.usuario; // Ajusta esto según tu lógica real
-
-                if (!cedulaIngresada.equals(cedulaUsuario)) {
-                    JOptionPane.showMessageDialog(RecargarSaldoVisual.this, "La cédula no coincide con la del usuario.", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                try {
-                    double monto = Double.parseDouble(montoIngresado);
-                    if (monto <= 0) {
-                        JOptionPane.showMessageDialog(RecargarSaldoVisual.this, "El monto debe ser mayor a cero.", "Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-                    valorVariable += monto;
-                    lblSaldo.setText("Saldo actual: " + valorVariable + " Bs");
-                    JOptionPane.showMessageDialog(RecargarSaldoVisual.this, "Saldo recargado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(RecargarSaldoVisual.this, "Ingrese un monto válido.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-
-
+        JScrollPane scroll = new JScrollPane(panelCampos);
+        scroll.setBorder(null);
+        getContentPane().add(scroll);
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            new RecargarSaldoVisual().setVisible(true);
+            try {
+                EscaneoFacial frame = new EscaneoFacial(); // <-- Cambia aquí
+                frame.setLocationRelativeTo(null); // Centrar la ventana
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Error al iniciar la ventana: " + e.getMessage());
+            }
         });
     }
-
 }

@@ -23,6 +23,13 @@ public class InicioVisual extends JFrame {
         HeaderPanel header = new HeaderPanel(cLU, false);
         add(header);
 
+        // Acción para el botón extra
+        header.getExtraButton().addActionListener(e -> {
+            new RecargarSaldoVisual().setVisible(true);
+            // Si quieres cerrar la ventana actual, puedes usar: dispose();
+            dispose();
+        });
+
         // Menú title
         add(createMenuTitle());
 

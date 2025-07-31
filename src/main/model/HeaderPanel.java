@@ -6,6 +6,7 @@ import main.controller.controlerInicioUser;
 
 public class HeaderPanel extends JPanel {
     private JButton logoutButton;
+    private JButton extraButton; // <-- Agrega esto como atributo
 
     public HeaderPanel(controlerInicioUser cLU, boolean isAdmin) {
         setLayout(new BorderLayout());
@@ -69,15 +70,33 @@ public class HeaderPanel extends JPanel {
             panel.add(balanceLabel);
         }
 
+        panel.add(userLabel);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        // Botón adicional según el tipo de usuario
+        String botonTexto = isAdmin ? "Escaneo Facial" : "Recargar Saldo";
+        extraButton = new JButton(botonTexto); // <-- Ahora es el atributo de la claseAhora es el atributo de la clase
+        extraButton.setFont(new Font("Roboto", Font.BOLD, 18));
+        extraButton.setBackground(new Color(48, 43, 47));
+        extraButton.setForeground(Color.WHITE);
+        extraButton.setBorderPainted(false);
+        extraButton.setFocusPainted(false);
+        extraButton.setMaximumSize(new Dimension(200, 40));
+        extraButton.setPreferredSize(new Dimension(200, 40));
+        extraButton.setMinimumSize(new Dimension(200, 40));
+        panel.add(extraButton);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+
         logoutButton = new JButton("CERRAR SESIÓN");
         logoutButton.setFont(new Font("Roboto", Font.BOLD, 18));
         logoutButton.setBackground(new Color(48, 43, 47));
         logoutButton.setForeground(Color.WHITE);
         logoutButton.setBorderPainted(false);
         logoutButton.setFocusPainted(false);
+        logoutButton.setMaximumSize(new Dimension(200, 40));
+        logoutButton.setPreferredSize(new Dimension(200, 40));
+        logoutButton.setMinimumSize(new Dimension(200, 40));
 
-        panel.add(userLabel);
-        panel.add(Box.createRigidArea(new Dimension(0, 10)));
         panel.add(logoutButton);
 
         return panel;
@@ -85,5 +104,9 @@ public class HeaderPanel extends JPanel {
 
     public JButton getLogoutButton() {
         return logoutButton;
+    }
+
+    public JButton getExtraButton() {
+        return extraButton; 
     }
 }
