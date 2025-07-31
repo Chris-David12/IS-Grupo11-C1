@@ -11,14 +11,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.border.EmptyBorder;
 
-public class CostosVisual extends JFrame {
+public class RecargarSaldoVisual extends JFrame {
     private AuthPanel authPanel;
 
     // Declara las variables como atributos de la clase
-    private double valorConstante = 100.0;
+
     private double valorVariable = 200.0;
 
-    public CostosVisual() {
+    public RecargarSaldoVisual() {
         setTitle("Inicio");
         setSize(1280, 720);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -142,7 +142,7 @@ public class CostosVisual extends JFrame {
         panelSubtitulo.setBackground(new Color(39, 39, 39));
         panelSubtitulo.setPreferredSize(new Dimension(1280, 50));
 
-        JLabel subtitulo = new JLabel("Costos generales del comedor");
+        JLabel subtitulo = new JLabel("Recargar Saldo");
         subtitulo.setFont(new Font("Roboto Black", Font.BOLD, 42));
         subtitulo.setForeground(Color.WHITE);
         subtitulo.setBorder(new EmptyBorder(0, 50, 0, 0));
@@ -151,102 +151,111 @@ public class CostosVisual extends JFrame {
         // Agrega el panel del subtítulo debajo del panel superior
         getContentPane().add(panelSubtitulo);
 
-        // Panel de costos personalizados
-        JPanel panelCostos = new JPanel(new GridBagLayout());
-        panelCostos.setBackground(new Color(39, 39, 39));
-        GridBagConstraints gbcCostos = new GridBagConstraints();
-        gbcCostos.gridx = 0;
-        gbcCostos.gridy = 0;
-        gbcCostos.insets = new Insets(10, 40, 5, 40);
-        gbcCostos.anchor = GridBagConstraints.WEST;
+        // Panel de Campos Para Recargar Saldo
+        authPanel = new AuthPanel();
+        JPanel panelCampos = new JPanel(new GridBagLayout());
+        panelCampos.setBackground(new Color(39, 39, 39));
+        GridBagConstraints gbcCampos = new GridBagConstraints();
+        gbcCampos.gridx = 0;
+        gbcCampos.gridy = 0;
+        gbcCampos.insets = new Insets(10, 40, 5, 40);
+        gbcCampos.anchor = GridBagConstraints.WEST;
 
-        // Constantes
-        JLabel lblConstante = new JLabel("CONSTANTES:");
-        lblConstante.setFont(new Font("Roboto", Font.BOLD, 22));
-        lblConstante.setForeground(Color.WHITE);
-        panelCostos.add(lblConstante, gbcCostos);
+        // Cedula
+        JLabel lblCedula = new JLabel("Cédula:");
+        lblCedula.setFont(new Font("Roboto", Font.BOLD, 22));
+        lblCedula.setForeground(Color.WHITE);
+        panelCampos.add(lblCedula, gbcCampos);
 
-        gbcCostos.gridy++;
-        JLabel valorConstanteLabel = new JLabel(valorConstante + " Bs");
-        valorConstanteLabel.setFont(new Font("Roboto", Font.PLAIN, 20));
-        valorConstanteLabel.setForeground(Color.WHITE);
-        panelCostos.add(valorConstanteLabel, gbcCostos);
+        gbcCampos.gridx = 1;
+        JTextField txtCedula = new JTextField(12);
+        txtCedula.setFont(new Font("Roboto", Font.PLAIN, 20));
+        txtCedula.setBackground(new Color(96, 96, 96));
+        txtCedula.setForeground(Color.WHITE);
+        txtCedula.setPreferredSize(new Dimension(500, 30));
+        panelCampos.add(txtCedula, gbcCampos);
 
-        JButton btnCambiarConstante = new JButton("Cambiar");
-        btnCambiarConstante.setFont(new Font("Roboto", Font.PLAIN, 16));
-        btnCambiarConstante.setBackground(new Color(21, 174, 92));
-        btnCambiarConstante.setForeground(Color.WHITE);
-        gbcCostos.gridx = 1;
-        panelCostos.add(btnCambiarConstante, gbcCostos);
 
-        // Variables
-        gbcCostos.gridx = 0;
-        gbcCostos.gridy++;
-        JLabel lblVariable = new JLabel("VARIABLES:");
-        lblVariable.setFont(new Font("Roboto", Font.BOLD, 22));
-        lblVariable.setForeground(Color.WHITE);
-        panelCostos.add(lblVariable, gbcCostos);
+        // Monto
+        gbcCampos.gridx = 0;
+        gbcCampos.gridy++;
+        JLabel lblMonto = new JLabel("Monto:");
+        lblMonto.setFont(new Font("Roboto", Font.BOLD, 22));
+        lblMonto.setForeground(Color.WHITE);
+        panelCampos.add(lblMonto, gbcCampos);
 
-        gbcCostos.gridy++;
-        JLabel valorVariableLabel = new JLabel(valorVariable + " Bs");
-        valorVariableLabel.setFont(new Font("Roboto", Font.PLAIN, 20));
-        valorVariableLabel.setForeground(Color.WHITE);
-        panelCostos.add(valorVariableLabel, gbcCostos);
+        gbcCampos.gridx = 1;
+        JTextField txtMonto = new JTextField(12);
+        txtMonto.setFont(new Font("Roboto", Font.PLAIN, 20));
+        txtMonto.setBackground(new Color(96, 96, 96));
+        txtMonto.setForeground(Color.WHITE);
+        txtMonto.setPreferredSize(new Dimension(500, 30));        
+        panelCampos.add(txtMonto, gbcCampos);
 
-        JButton btnCambiarVariable = new JButton("Cambiar");
-        btnCambiarVariable.setFont(new Font("Roboto", Font.PLAIN, 16));
-        btnCambiarVariable.setBackground(new Color(21, 174, 92));
-        btnCambiarVariable.setForeground(Color.WHITE);
-        gbcCostos.gridx = 1;
-        panelCostos.add(btnCambiarVariable, gbcCostos);
+        // Saldo actual (opcional, solo visual)
+        gbcCampos.gridx = 0;
+        gbcCampos.gridy++;
+        gbcCampos.gridwidth = 2;
+        JLabel lblSaldo = new JLabel("Saldo actual: " + valorVariable + " Bs");
+        lblSaldo.setFont(new Font("Roboto", Font.PLAIN, 20));
+        lblSaldo.setForeground(Color.WHITE);
+        panelCampos.add(lblSaldo, gbcCampos);
 
-        // CCB
-        gbcCostos.gridx = 0;
-        gbcCostos.gridy++;
-        JLabel lblCCB = new JLabel("CCB:");
-        lblCCB.setFont(new Font("Roboto", Font.BOLD, 22));
-        lblCCB.setForeground(Color.WHITE);
-        panelCostos.add(lblCCB, gbcCostos);
+        // Botón de Recargar Saldo debajo del saldo actual
+        gbcCampos.gridx = 0;
+        gbcCampos.gridy++;
+        gbcCampos.gridwidth = 2;
+        gbcCampos.anchor = GridBagConstraints.CENTER;
+        RoundedButton btnRecargarSaldo = new RoundedButton("Recargar Saldo");
+        btnRecargarSaldo.setFont(new Font("Roboto", Font.BOLD, 22));
+        btnRecargarSaldo.setBackground(new Color(21, 174, 92));
+        btnRecargarSaldo.setForeground(Color.WHITE);
+        btnRecargarSaldo.setPreferredSize(new Dimension(200, 50));
+        panelCampos.add(btnRecargarSaldo, gbcCampos);
 
-        gbcCostos.gridy++;
-        JLabel valorCCBLabel = new JLabel((valorConstante + valorVariable) + " Bs");
-        valorCCBLabel.setFont(new Font("Roboto", Font.PLAIN, 20));
-        valorCCBLabel.setForeground(Color.WHITE);
-        panelCostos.add(valorCCBLabel, gbcCostos);
+        // Agrega el panel de campos al frame
+        getContentPane().add(panelCampos);
 
-        // Agrega el panel de costos al frame
-        getContentPane().add(panelCostos);
+        btnRecargarSaldo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String cedulaIngresada = txtCedula.getText().trim();
+                String montoIngresado = txtMonto.getText().trim();
 
-        // Listeners para los botones
-        btnCambiarConstante.addActionListener(e -> {
-            String nuevoValor = JOptionPane.showInputDialog(this, "Nuevo valor para Constantes:", valorConstante);
-            if (nuevoValor != null && !nuevoValor.isEmpty()) {
+                if (cedulaIngresada.isEmpty() || montoIngresado.isEmpty()) {
+                    JOptionPane.showMessageDialog(RecargarSaldoVisual.this, "Debe ingresar la cédula y el monto.", "Campos obligatorios", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                // Aquí debes comparar con la cédula real del usuario. Por ejemplo:
+                String cedulaUsuario = cLU.usuario; // Ajusta esto según tu lógica real
+
+                if (!cedulaIngresada.equals(cedulaUsuario)) {
+                    JOptionPane.showMessageDialog(RecargarSaldoVisual.this, "La cédula no coincide con la del usuario.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
                 try {
-                    valorConstante = Double.parseDouble(nuevoValor);
-                    valorConstanteLabel.setText(valorConstante + " Bs");
-                    valorCCBLabel.setText((valorConstante + valorVariable) + " Bs");
+                    double monto = Double.parseDouble(montoIngresado);
+                    if (monto <= 0) {
+                        JOptionPane.showMessageDialog(RecargarSaldoVisual.this, "El monto debe ser mayor a cero.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    valorVariable += monto;
+                    lblSaldo.setText("Saldo actual: " + valorVariable + " Bs");
+                    JOptionPane.showMessageDialog(RecargarSaldoVisual.this, "Saldo recargado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(this, "Ingrese un número válido.");
+                    JOptionPane.showMessageDialog(RecargarSaldoVisual.this, "Ingrese un monto válido.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
-        btnCambiarVariable.addActionListener(e -> {
-            String nuevoValor = JOptionPane.showInputDialog(this, "Nuevo valor para Variables:", valorVariable);
-            if (nuevoValor != null && !nuevoValor.isEmpty()) {
-                try {
-                    valorVariable = Double.parseDouble(nuevoValor);
-                    valorVariableLabel.setText(valorVariable + " Bs");
-                    valorCCBLabel.setText((valorConstante + valorVariable) + " Bs");
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(this, "Ingrese un número válido.");
-                }
-            }
-        });
+
+
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            new CostosVisual().setVisible(true);
+            new RecargarSaldoVisual().setVisible(true);
         });
     }
 
