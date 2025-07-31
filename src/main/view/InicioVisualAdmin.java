@@ -220,13 +220,44 @@ public class InicioVisualAdmin extends JFrame {
     }
 
     private void addTarjeta() {
-        TarjetaMenu nueva = MenuEditorDialog.showDialog(this, null);
-        if (nueva != null) {
-            nueva.setId(nextId++);
-            tarjetas.add(nueva);
-            refreshCards();
-            saveMenuData(); // Guardar cambios en el archivo
+        // Crear un nuevo menú con valores por defecto
+        TarjetaMenu nuevoMenu = new TarjetaMenu(
+                nextId++, // Auto-incrementar ID
+                "Desayuno", // Tipo por defecto
+                java.time.LocalDate.now().toString(), // Fecha actual
+                "07:00-09:00", // Horario por defecto
+                "", // Descripción vacía
+                0, // Cantidad usuarios inicial
+                0.0, // Constante inicial
+                0.0 // Variable inicial
+        );
+
+        // Mostrar diálogo de edición
+        TarjetaMenu menuEditado = MenuEditorDialog.showDialog(this, nuevoMenu);
+
+        if (menuEditado != null) {
+            // Validar los datos antes de agregar
+            if (validarMenu(menuEditado)) {
+                tarjetas.add(menuEditado);
+                refreshCards();
+                saveMenuData();
+
+                JOptionPane.showMessageDialog(this,
+                        "Menú agregado correctamente",
+                        "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Datos del menú incompletos o inválidos",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
+    }
+
+    private boolean validarMenu(TarjetaMenu menu) {
+        return !menu.getTipo().isEmpty() &&
+                !menu.getFecha().isEmpty() &&
+                !menu.getHorario().isEmpty() &&
+                menu.getCantidadUsuarios() > 0;
     }
 
     public static void main(String[] args) {
